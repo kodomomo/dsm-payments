@@ -52,19 +52,9 @@ public class SocketConfig {
                 return;
             }
             for (Method method : controller.getDeclaredMethods()) {
-                if (method.getDeclaredAnnotation(SocketConnect.class) != null) {
+                if (method.getDeclaredAnnotation(SocketConnect.class) != null ||
+                        method.getDeclaredAnnotation(SocketDisConnect.class) != null) {
                     server.addConnectListener(client -> {
-                        try {
-                            List<Object> args = new ArrayList<>();
-                            for (Class<?> parameter : method.getParameterTypes()) {
-                                if (parameter.equals(SocketIOServer.class)) args.add(server);
-                                else if (parameter.equals(SocketIOClient.class)) args.add(client);
-                            }
-                            method.invoke(controllerInstance, args.toArray());
-                        } catch (IllegalAccessException | InvocationTargetException ignored) {}
-                    });
-                } else if (method.getDeclaredAnnotation(SocketDisConnect.class) != null) {
-                    server.addDisconnectListener(client -> {
                         try {
                             List<Object> args = new ArrayList<>();
                             for (Class<?> parameter : method.getParameterTypes()) {
