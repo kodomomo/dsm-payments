@@ -9,6 +9,7 @@ import com.github.kodomo.dsmpayments.infra.config.socket.annotation.SocketDisCon
 import com.github.kodomo.dsmpayments.infra.config.socket.annotation.SocketMapping;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -36,13 +37,18 @@ public class SocketConfig {
 
     private SocketIOServer server;
 
-    @PostConstruct
-    public void setup() {
+    @Bean
+    public SocketIOServer socketIOServer() {
         com.corundumstudio.socketio.Configuration config = new com.corundumstudio.socketio.Configuration();
         config.setPort(port);
         server = new SocketIOServer(config);
         server.start();
 
+        return server;
+    }
+
+    @PostConstruct
+    public void setup() {
         getModuleConfiguration().forEach(controller -> {
             Object controllerInstance;
             try {
