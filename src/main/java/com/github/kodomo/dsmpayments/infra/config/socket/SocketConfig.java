@@ -16,6 +16,7 @@ import javax.annotation.PreDestroy;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -43,6 +44,13 @@ public class SocketConfig {
         server.start();
 
         getModuleConfiguration().forEach(controller -> {
+            Object controllerInstance;
+            try {
+                Constructor<?> constructor = controller.getConstructor();
+                controllerInstance = constructor.newInstance();
+            } catch (Exception ignored) {
+                return;
+            }
             for (Method method : controller.getDeclaredMethods()) {
                 if (method.getDeclaredAnnotation(SocketConnect.class) != null) {
                     server.addConnectListener(client -> {
@@ -52,7 +60,7 @@ public class SocketConfig {
                                 if (parameter.equals(SocketIOServer.class)) args.add(server);
                                 else if (parameter.equals(SocketIOClient.class)) args.add(client);
                             }
-                            method.invoke(controller, args.toArray());
+                            method.invoke(controllerInstance, args.toArray());
                         } catch (IllegalAccessException | InvocationTargetException ignored) {}
                     });
                 } else if (method.getDeclaredAnnotation(SocketDisConnect.class) != null) {
@@ -63,7 +71,7 @@ public class SocketConfig {
                                 if (parameter.equals(SocketIOServer.class)) args.add(server);
                                 else if (parameter.equals(SocketIOClient.class)) args.add(client);
                             }
-                            method.invoke(controller, args.toArray());
+                            method.invoke(controllerInstance, args.toArray());
                         } catch (IllegalAccessException | InvocationTargetException ignored) {}
                     });
                 } else if (method.getDeclaredAnnotation(SocketMapping.class) != null) {
@@ -77,7 +85,7 @@ public class SocketConfig {
                             else if (parameter.equals(SocketIOClient.class)) args.add(client);
                             else if (parameter.equals(requestDTO)) args.add(data);
                         }
-                        method.invoke(controller, args.toArray());
+                        method.invoke(controllerInstance, args.toArray());
                     });
                 }
             }
