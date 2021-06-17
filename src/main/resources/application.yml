@@ -1,0 +1,12 @@
+server:
+  socket:
+    port: ${SOCKET_PORT}
+
+spring:
+  datasource:
+    url: ${MYSQL_URL}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+db:
+  dms:
+    url: ${DMS_MYSQL_URL}
