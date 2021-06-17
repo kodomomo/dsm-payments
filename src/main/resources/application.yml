@@ -7,6 +7,10 @@ spring:
     url: ${MYSQL_URL}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+auth:
+  jwt:
+    secret: ${JWT_SECRET:dGVzdA==}
+
 db:
   dms:
     url: ${DMS_MYSQL_URL}
