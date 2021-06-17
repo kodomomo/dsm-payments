@@ -43,11 +43,11 @@ public class SocketConfig {
         config.setPort(port);
         server = new SocketIOServer(config);
         server.start();
+        setup();
 
         return server;
     }
 
-    @PostConstruct
     public void setup() {
         getModuleConfiguration().forEach(controller -> {
             Object controllerInstance;
