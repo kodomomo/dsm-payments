@@ -42,7 +42,7 @@ public class MysqlConnector {
         if (resultSet.next()) {
             return DMSUserEntity.builder()
                     .id(resultSet.getString("id"))
-                    .password(resultSet.getString("password"))
+                    .password(resultSet.getString("pw"))
                     .name(resultSet.getString("name"))
                     .number(resultSet.getInt("number"))
                     .email(resultSet.getString("email"))
