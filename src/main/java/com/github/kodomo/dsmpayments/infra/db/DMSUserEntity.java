@@ -12,4 +12,7 @@ import lombok.NoArgsConstructor;
 public class DMSUserEntity {
     private String id;
     private String password;
+    private String name;
+    private Integer number;
+    private String email;
 }

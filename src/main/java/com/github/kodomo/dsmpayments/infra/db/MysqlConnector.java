@@ -16,6 +16,12 @@ public class MysqlConnector {
     @Value("${db.dms.url}")
     private String url;
 
+    @Value("${db.dms.username}")
+    private String username;
+
+    @Value("${db.dms.password}")
+    private String password;
+
     private Connection connection;
 
     @PostConstruct
@@ -23,17 +29,23 @@ public class MysqlConnector {
         connection = DataSourceBuilder.create()
                 .driverClassName("com.mysql.cj.jdbc.Driver")
                 .url(url)
-                .build().getConnection();
+                .username(username)
+                .password(password)
+                .build()
+                .getConnection();
     }
 
     public DMSUserEntity findById(String id) throws SQLException {
         Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("select * from user where id = " + id);
+        ResultSet resultSet = statement.executeQuery("select * from student where id = '" + id + "'");
 
         if (resultSet.next()) {
             return DMSUserEntity.builder()
                     .id(resultSet.getString("id"))
                     .password(resultSet.getString("password"))
+                    .name(resultSet.getString("name"))
+                    .number(resultSet.getInt("number"))
+                    .email(resultSet.getString("email"))
                     .build();
         }
 
