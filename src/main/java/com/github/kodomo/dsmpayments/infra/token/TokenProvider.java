@@ -14,11 +14,11 @@ public class TokenProvider {
     @Value("${auth.jwt.secret}")
     private String secretKey;
 
-    public String generateAccessToken(Integer receiptCode, String type) {
+    public String generateAccessToken(Integer studentNumber, String type) {
         return Jwts.builder()
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 86400000))
-                .setSubject(receiptCode.toString())
+                .setSubject(studentNumber.toString())
                 .claim("type", type)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
