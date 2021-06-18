@@ -30,7 +30,7 @@ import java.util.zip.ZipInputStream;
 @Component
 public class SocketConfig {
 
-    private static final String SOCKET_CONTROLLER_PATH = "com.github.kodomo.dsmpayments";
+    private static final String SOCKET_CONTROLLER_PATH = "com.github.kodomo.dsmpayments.domain";
 
     @Value("${server.socket.port}")
     private Integer port;
@@ -99,9 +99,9 @@ public class SocketConfig {
         assert classLoader != null;
 
         String path = SOCKET_CONTROLLER_PATH.replace('.', '/');
-        URL modulePathUrl = classLoader.getResource(path);
-        assert modulePathUrl != null;
-        File pathDirectory = new File(modulePathUrl.getFile());
+        URL pathUrl = classLoader.getResource(path);
+        assert pathUrl != null;
+        File pathDirectory = new File(pathUrl.getFile());
         if (pathDirectory.isDirectory()) {
             return findClassesFromDirectory(pathDirectory, SOCKET_CONTROLLER_PATH);
         } else {
