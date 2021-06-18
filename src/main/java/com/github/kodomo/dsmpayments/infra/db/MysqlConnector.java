@@ -37,7 +37,7 @@ public class MysqlConnector {
 
     public DMSUserEntity findById(String id) throws SQLException {
         Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("select * from student where id = " + id);
+        ResultSet resultSet = statement.executeQuery("select * from student where id = '" + id + "'");
 
         if (resultSet.next()) {
             return DMSUserEntity.builder()
