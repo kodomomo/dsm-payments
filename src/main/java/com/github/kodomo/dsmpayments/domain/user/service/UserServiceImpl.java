@@ -1,7 +1,9 @@
 package com.github.kodomo.dsmpayments.domain.user.service;
 
 import com.github.kodomo.dsmpayments.domain.user.entity.DMSUser;
+import com.github.kodomo.dsmpayments.domain.user.entity.User;
 import com.github.kodomo.dsmpayments.domain.user.exception.LoginFailedException;
+import com.github.kodomo.dsmpayments.domain.user.exception.UserNotFoundException;
 import com.github.kodomo.dsmpayments.domain.user.repository.UserRepository;
 import com.github.kodomo.dsmpayments.infra.token.TokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -23,5 +25,11 @@ public class UserServiceImpl implements UserService {
         if (!user.checkPassword(password)) { throw new LoginFailedException(); }
 
         return tokenProvider.generateAccessToken(user.getNumber(), "user");
+    }
+
+    @Override
+    public User getUser(Integer userNumber) {
+        return userRepository.findByUserNumber(userNumber)
+                .orElseThrow(UserNotFoundException::new);
     }
 }
