@@ -24,6 +24,8 @@ public class MysqlConnector {
 
     private Connection connection;
 
+    private Statement statement;
+
     @PostConstruct
     public void setup() throws SQLException {
         connection = DataSourceBuilder.create()
@@ -33,10 +35,11 @@ public class MysqlConnector {
                 .password(password)
                 .build()
                 .getConnection();
+        statement = connection.createStatement();
     }
 
     public DMSUserEntity findById(String id) throws SQLException {
-        Statement statement = connection.createStatement();
+        checkConnection();
         ResultSet resultSet = statement.executeQuery("select * from student where id = '" + id + "'");
 
         if (resultSet.next()) {
@@ -48,8 +51,12 @@ public class MysqlConnector {
                     .email(resultSet.getString("email"))
                     .build();
         }
-
         return null;
     }
 
+    public void checkConnection() throws SQLException {
+        if (connection.isClosed()) {
+            setup();
+        }
+    }
 }
