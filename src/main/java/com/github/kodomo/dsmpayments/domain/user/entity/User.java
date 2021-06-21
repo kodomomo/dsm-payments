@@ -22,5 +22,8 @@ public class User {
     private String userName;
 
     @Column(length = 6, nullable = false)
-    private String userUUID;
+    private String userUuid;
+
+    @Column( nullable = false)
+    private Integer coin;
 }
