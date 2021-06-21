@@ -1,6 +1,5 @@
 package com.github.kodomo.dsmpayments.infra.security;
 
-import com.github.kodomo.dsmpayments.infra.token.TokenHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,18 +14,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
-    private final TokenHandler tokenHandler;
+    private final SecurityFilter securityFilter;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(tokenHandler);
+        registry.addInterceptor(securityFilter);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .formLogin().disable();
+                .formLogin().disable()
+                .authorizeRequests()
+                    .anyRequest().permitAll();
     }
 
     @Override

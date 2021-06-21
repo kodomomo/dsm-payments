@@ -9,6 +9,8 @@ import com.github.kodomo.dsmpayments.infra.token.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.security.MessageDigest;
+
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +25,15 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(LoginFailedException::new);
 
         if (!user.checkPassword(password)) { throw new LoginFailedException(); }
+
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+
+        } catch (Exception exception) {
+            System.out.println(exception.getMessage());
+        }
+
+        if (!user.getPassword().equals(password)) { throw new LoginFailedException(); }
 
         return tokenProvider.generateAccessToken(user.getNumber(), "user");
     }

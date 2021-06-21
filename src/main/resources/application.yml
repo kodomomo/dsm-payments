@@ -3,8 +3,13 @@ server:
     port: ${SOCKET_PORT}
 
 spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
   datasource:
     url: ${MYSQL_URL}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 auth:
@@ -14,3 +19,8 @@ auth:
 db:
   dms:
     url: ${DMS_MYSQL_URL}
+    username: ${DMS_MYSQL_USERNAME}
+    password: ${DMS_MYSQL_PASSWORD}
+
+admin:
+  password: ${ADMIN_PASSWORD}
