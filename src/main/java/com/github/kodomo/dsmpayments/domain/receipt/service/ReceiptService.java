@@ -38,7 +38,7 @@ public class ReceiptService implements ReceiptIntegrate {
         Page<Receipt> receiptPages = repository.findAll(pageable);
         return ReceiptPageDTO.of(receiptPages);
     }
-
+    
     @Override
     public ReceiptPageDTO findAllByQuery(String query, Pageable pageable) {
         Page<Receipt> receiptPages = repository.findAllByQuery(query, pageable);
