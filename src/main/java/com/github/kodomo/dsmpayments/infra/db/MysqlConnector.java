@@ -5,6 +5,7 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -50,6 +51,11 @@ public class MysqlConnector {
         }
 
         return null;
+    }
+
+    @PreDestroy
+    public void destroy() throws SQLException {
+        connection.close();
     }
 
 }

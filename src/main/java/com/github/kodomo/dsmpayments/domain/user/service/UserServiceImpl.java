@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
 
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            digest.
+
         } catch (Exception exception) {
             System.out.println(exception.getMessage());
         }
