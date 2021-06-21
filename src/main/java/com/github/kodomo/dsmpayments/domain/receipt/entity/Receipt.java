@@ -1,7 +1,7 @@
 package com.github.kodomo.dsmpayments.domain.receipt.entity;
 
 import com.github.kodomo.dsmpayments.domain.receipt.service.dto.ReceiptDTO;
-import com.github.kodomo.dsmpayments.domain.seller.entity.Seller;
+import com.github.kodomo.dsmpayments.domain.booth.entity.Booth;
 import com.github.kodomo.dsmpayments.domain.user.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +25,7 @@ public class Receipt {
 
     @ManyToOne
     @JoinColumn(name = "seller_id")
-    private Seller seller;
+    private Booth booth;
 
     @Enumerated(EnumType.STRING)
     private ReceiptSender sender;
@@ -35,9 +35,9 @@ public class Receipt {
     @CreatedBy
     private LocalDateTime createdAt;
 
-    private Receipt(User user, Seller seller, ReceiptSender sender, int value) {
+    private Receipt(User user, Booth booth, ReceiptSender sender, int value) {
         this.user = user;
-        this.seller = seller;
+        this.booth = booth;
         this.sender = sender;
         this.value = value;
     }
@@ -45,7 +45,7 @@ public class Receipt {
     public static Receipt of(ReceiptDTO receiptDTO) {
         return new Receipt(
                 receiptDTO.getUser(),
-                receiptDTO.getSeller(),
+                receiptDTO.getBooth(),
                 receiptDTO.getSender(),
                 receiptDTO.getValue()
         );

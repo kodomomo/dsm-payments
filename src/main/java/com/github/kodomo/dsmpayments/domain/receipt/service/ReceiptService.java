@@ -6,7 +6,7 @@ import com.github.kodomo.dsmpayments.domain.receipt.integrate.ReceiptIntegrate;
 import com.github.kodomo.dsmpayments.domain.receipt.repository.ReceiptRepository;
 import com.github.kodomo.dsmpayments.domain.receipt.service.dto.ReceiptDTO;
 import com.github.kodomo.dsmpayments.domain.receipt.service.dto.ReceiptPageDTO;
-import com.github.kodomo.dsmpayments.domain.seller.entity.Seller;
+import com.github.kodomo.dsmpayments.domain.booth.entity.Booth;
 import com.github.kodomo.dsmpayments.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -41,7 +41,8 @@ public class ReceiptService implements ReceiptIntegrate {
 
     @Override
     public ReceiptPageDTO findAllByQuery(String query, Pageable pageable) {
-        return null;
+        Page<Receipt> receiptPages = repository.findAllByQuery(query, pageable);
+        return ReceiptPageDTO.of(receiptPages);
     }
 
     @Override
@@ -51,8 +52,8 @@ public class ReceiptService implements ReceiptIntegrate {
     }
 
     @Override
-    public ReceiptPageDTO findAllForSeller(Seller seller, Pageable pageable) {
-        Page<Receipt> receiptPages = repository.findAllBySeller(seller, pageable);
+    public ReceiptPageDTO findAllForSeller(Booth booth, Pageable pageable) {
+        Page<Receipt> receiptPages = repository.findAllByBooth(booth, pageable);
         return ReceiptPageDTO.of(receiptPages);
     }
 
