@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity(name = "tbl_receipt")
 public class Receipt {
+    private final float percentOfTax = 50;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +32,11 @@ public class Receipt {
     @Enumerated(EnumType.STRING)
     private ReceiptSender sender;
 
-    private int value;
+    private int requestedValue;
+
+    private int tax;
+
+    private int finalValue;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -40,7 +45,11 @@ public class Receipt {
         this.user = user;
         this.booth = booth;
         this.sender = sender;
-        this.value = value;
+        this.requestedValue = value;
+        if (this.sender.equals(ReceiptSender.USER) && this.requestedValue < 0) {
+            this.tax = Math.round((float) -this.requestedValue * (50 / (float) 100));
+            this.finalValue = this.requestedValue + this.tax;
+        }
     }
 
     public static Receipt of(ReceiptDTO receiptDTO) {
@@ -48,7 +57,7 @@ public class Receipt {
                 receiptDTO.getUser(),
                 receiptDTO.getBooth(),
                 receiptDTO.getSender(),
-                receiptDTO.getValue()
+                receiptDTO.getRequestValue()
         );
     }
 

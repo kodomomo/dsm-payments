@@ -13,15 +13,29 @@ public class ReceiptDTO {
     private final Long id;
     private final User user;
     private final Booth booth;
-    private final int value;
+    private final int requestValue;
+    private final Integer tax;
+    private final Integer finalValue;
     private final ReceiptSender sender;
+
+    public ReceiptDTO(User user, Booth booth, int requestValue, ReceiptSender sender) {
+        this.id = null;
+        this.user = user;
+        this.booth = booth;
+        this.requestValue = requestValue;
+        this.sender = sender;
+        this.tax = null;
+        this.finalValue = null;
+    }
 
     public static ReceiptDTO of(Receipt receipt) {
        return new ReceiptDTO(
                receipt.getId(),
                receipt.getUser(),
                receipt.getBooth(),
-               receipt.getValue(),
+               receipt.getRequestedValue(),
+               receipt.getTax(),
+               receipt.getFinalValue(),
                receipt.getSender()
        );
     }
