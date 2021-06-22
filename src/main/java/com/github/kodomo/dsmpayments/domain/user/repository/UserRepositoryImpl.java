@@ -31,4 +31,14 @@ public class UserRepositoryImpl implements  UserRepository {
     public Optional<User> findByUserNumber(Integer userNumber) {
         return dsmPaymentsUserRepository.findByUserNumber(userNumber);
     }
+
+    @Override
+    public Optional<User> findByUserUuid(String userUuid) {
+        return dsmPaymentsUserRepository.findByUserUuid(userUuid);
+    }
+
+    @Override
+    public User save(User user) {
+        return dsmPaymentsUserRepository.save(user);
+    }
 }
