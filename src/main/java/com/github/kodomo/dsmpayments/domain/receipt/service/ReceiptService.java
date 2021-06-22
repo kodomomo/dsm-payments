@@ -33,7 +33,6 @@ public class ReceiptService implements ReceiptIntegrate {
         }
 
         return ReceiptDTO.of(receipt);
-
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.github.kodomo.dsmpayments.domain.admin.controller;
 
-import com.github.kodomo.dsmpayments.domain.admin.service.AdminService;
+import com.github.kodomo.dsmpayments.domain.admin.service.main.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
