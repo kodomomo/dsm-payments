@@ -1,11 +1,12 @@
 package com.github.kodomo.dsmpayments.domain.receipt.entity;
 
-import com.github.kodomo.dsmpayments.domain.receipt.service.dto.ReceiptDTO;
 import com.github.kodomo.dsmpayments.domain.booth.entity.Booth;
+import com.github.kodomo.dsmpayments.domain.receipt.service.dto.ReceiptDTO;
 import com.github.kodomo.dsmpayments.domain.user.entity.User;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -32,7 +33,7 @@ public class Receipt {
 
     private int value;
 
-    @CreatedBy
+    @CreatedDate
     private LocalDateTime createdAt;
 
     private Receipt(User user, Booth booth, ReceiptSender sender, int value) {
