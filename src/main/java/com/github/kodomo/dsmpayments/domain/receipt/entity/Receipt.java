@@ -1,11 +1,12 @@
 package com.github.kodomo.dsmpayments.domain.receipt.entity;
 
-import com.github.kodomo.dsmpayments.domain.receipt.service.dto.ReceiptDTO;
 import com.github.kodomo.dsmpayments.domain.booth.entity.Booth;
+import com.github.kodomo.dsmpayments.domain.receipt.service.dto.ReceiptDTO;
 import com.github.kodomo.dsmpayments.domain.user.entity.User;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,7 +15,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity(name = "tbl_receipt")
 public class Receipt {
-    private final float percentOfTax = 50;
+
+    private static final int TAX = 50;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,18 +39,19 @@ public class Receipt {
 
     private int finalValue;
 
-    @CreatedBy
+    @CreatedDate
     private LocalDateTime createdAt;
 
-    private Receipt(User user, Booth booth, ReceiptSender sender, int value) {
+    private Receipt(User user, Booth booth, ReceiptSender sender, int requestedValue) {
         this.user = user;
         this.booth = booth;
         this.sender = sender;
-        this.requestedValue = value;
+        this.requestedValue = requestedValue;
+        this.tax = 0;
         if (this.sender.equals(ReceiptSender.USER) && this.requestedValue < 0) {
-            this.tax = Math.round((float) -this.requestedValue * (50 / (float) 100));
-            this.finalValue = this.requestedValue + this.tax;
+            this.tax = Math.round((float) this.requestedValue * (TAX / (float) 100));
         }
+        this.finalValue = this.requestedValue - this.tax;
     }
 
     public static Receipt of(ReceiptDTO receiptDTO) {
