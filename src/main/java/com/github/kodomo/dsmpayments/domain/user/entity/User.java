@@ -26,4 +26,13 @@ public class User {
 
     @Column( nullable = false)
     private Integer coin;
+
+    public User pay(Integer coin) {
+        this.coin = this.coin - coin;
+        return this;
+    }
+
+    public Boolean isValidPayment(Integer coin) {
+        return this.coin - coin >= 0;
+    };
 }

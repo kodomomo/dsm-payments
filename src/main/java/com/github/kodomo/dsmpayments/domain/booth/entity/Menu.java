@@ -5,9 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity(name="tbl_menu")
 @Builder
@@ -16,16 +14,14 @@ import javax.persistence.Id;
 @AllArgsConstructor
 public class Menu {
     @Id
-    private Integer MenuId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer menuId;
 
     @Column(nullable = false)
     private String boothId;
 
     @Column(length = 30, nullable = false)
     private String name;
-
-    @Column(nullable = false)
-    private Boolean isRemit;
 
     @Column(nullable = false)
     private Integer price;

@@ -12,12 +12,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.lang.model.type.IntersectionType;
+
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
-    private final TokenHandler tokenHandler;
-
     private final UserService userService;
 
     @PostMapping("/auth")
@@ -32,12 +32,14 @@ public class UserController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public UserResponse getUser(@AuthenticationPrincipal Object number) {
-        User user = userService.getUser((Integer) number);
-        return UserResponse.builder()
-                .uuid(user.getUserUuid())
-                .name(user.getUserName())
-                .number(user.getUserNumber())
-                .coin(user.getCoin())
-                .build();
+        System.out.println(number);
+//        User user = userService.getUser((Integer) number);
+//        return UserResponse.builder()
+//                .uuid(user.getUserUuid())
+//                .name(user.getUserName())
+//                .number(user.getUserNumber())
+//                .coin(user.getCoin())
+//                .build();
+        return null;
     }
 }

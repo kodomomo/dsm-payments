@@ -9,4 +9,8 @@ public interface UserRepository {
     public Optional<DMSUser> findDMSUserById(String id);
 
     public Optional<User> findByUserNumber(Integer userNumber);
+
+    public Optional<User> findByUserUuid(String userUuid);
+
+    public User save(User user);
 }

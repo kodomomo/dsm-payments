@@ -1,5 +1,6 @@
 package com.github.kodomo.dsmpayments.infra.security;
 
+import com.github.kodomo.dsmpayments.infra.token.TokenHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,10 +16,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
     private final SecurityFilter securityFilter;
+    private final TokenHandler tokenHandler;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(securityFilter);
+        registry.addInterceptor(tokenHandler);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.github.kodomo.dsmpayments.domain.booth.entity;
 
+import com.github.kodomo.dsmpayments.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +17,7 @@ import javax.persistence.Id;
 @AllArgsConstructor
 public class Booth {
     @Id
-    private Integer boothId;
+    private String boothId;
 
     @Column(length = 60, nullable = false)
     private String password;
@@ -29,4 +30,13 @@ public class Booth {
 
     @Column(nullable = false)
     private Integer totalCoin;
+
+    public Booth pay(Integer coin) {
+        this.coin = this.coin - coin;
+        return this;
+    }
+
+    public Boolean isValidPayment(Integer coin) {
+        return this.coin - coin >= 0;
+    };
 }
