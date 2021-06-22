@@ -38,7 +38,7 @@ public class TokenHandler implements HandlerInterceptor {
         if (jwtRequired) {
             String token = tokenProvider.resolveAccessToken(request);
             if (tokenProvider.validateToken(token)) {
-                int userNumber = tokenProvider.parseAccessToken(token);
+                String uuid = tokenProvider.parseAccessToken(token);
                 SecurityContext securityContext = SecurityContextHolder.getContext();
                 securityContext.setAuthentication(new Authentication() {
                     @Override
@@ -58,7 +58,7 @@ public class TokenHandler implements HandlerInterceptor {
 
                     @Override
                     public Object getPrincipal() {
-                        return userNumber;
+                        return uuid;
                     }
 
                     @Override
