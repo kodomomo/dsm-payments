@@ -1,4 +1,4 @@
-package com.github.kodomo.dsmpayments.domain.admin.service;
+package com.github.kodomo.dsmpayments.domain.admin.service.main;
 
 import com.github.kodomo.dsmpayments.infra.exception.GlobalException;
 import org.springframework.beans.factory.annotation.Value;

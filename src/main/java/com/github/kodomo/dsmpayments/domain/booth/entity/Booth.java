@@ -31,8 +31,13 @@ public class Booth {
     @Column(nullable = false)
     private Integer totalCoin;
 
-    public Booth pay(Integer coin) {
-        this.coin = this.coin - coin;
+    public Booth takeCoin(Integer coin) {
+        this.coin -= coin;
+        return this;
+    }
+
+    public Booth giveCoin(Integer coin) {
+        this.coin += coin;
         return this;
     }
 

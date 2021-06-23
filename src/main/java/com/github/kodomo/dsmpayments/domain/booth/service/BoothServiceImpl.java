@@ -11,7 +11,6 @@ import com.github.kodomo.dsmpayments.domain.receipt.service.dto.ReceiptDTO;
 import com.github.kodomo.dsmpayments.domain.user.entity.User;
 import com.github.kodomo.dsmpayments.domain.user.exception.UserNotFoundException;
 import com.github.kodomo.dsmpayments.domain.user.repository.UserRepository;
-import com.github.kodomo.dsmpayments.infra.exception.GlobalException;
 import com.github.kodomo.dsmpayments.infra.token.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -78,8 +77,8 @@ public class BoothServiceImpl implements BoothService {
                 ReceiptSender.USER
         ));
 
-        user.pay(receiptDTO.getFinalValue()); // receipt
-        booth.pay(receiptDTO.getRequestValue());
+        user.takeCoin(receiptDTO.getFinalValue()); // receipt
+        booth.takeCoin(receiptDTO.getRequestValue());
 
         userRepository.save(user);
         boothRepository.save(booth);

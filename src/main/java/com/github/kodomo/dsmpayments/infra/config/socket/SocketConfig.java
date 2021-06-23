@@ -9,15 +9,14 @@ import com.github.kodomo.dsmpayments.infra.config.socket.annotation.SocketDisCon
 import com.github.kodomo.dsmpayments.infra.config.socket.annotation.SocketMapping;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -32,10 +31,16 @@ public class SocketConfig {
 
     private static final String SOCKET_CONTROLLER_PATH = "com.github.kodomo.dsmpayments.domain";
 
+    private final ConfigurableListableBeanFactory beanFactory;
+
     @Value("${server.socket.port}")
     private Integer port;
 
     private SocketIOServer server;
+
+    public SocketConfig(ConfigurableListableBeanFactory beanFactory) {
+        this.beanFactory = beanFactory;
+    }
 
     @Bean
     public SocketIOServer socketIOServer() {
@@ -49,15 +54,9 @@ public class SocketConfig {
     }
 
     public void setup() {
-        getModuleConfiguration().forEach(controller -> {
-            Object controllerInstance;
-            try {
-                Constructor<?> constructor = controller.getConstructor();
-                controllerInstance = constructor.newInstance();
-            } catch (Exception ignored) {
-                return;
-            }
-            for (Method method : controller.getDeclaredMethods()) {
+        beanFactory.getBeansWithAnnotation(SocketController.class).values().forEach(controller -> {
+            Class<?> controllerClass = controller.getClass();
+            for (Method method : controllerClass.getDeclaredMethods()) {
                 if (method.getDeclaredAnnotation(SocketConnect.class) != null ||
                         method.getDeclaredAnnotation(SocketDisConnect.class) != null) {
                     server.addConnectListener(client -> {
@@ -67,7 +66,7 @@ public class SocketConfig {
                                 if (parameter.equals(SocketIOServer.class)) args.add(server);
                                 else if (parameter.equals(SocketIOClient.class)) args.add(client);
                             }
-                            method.invoke(controllerInstance, args.toArray());
+                            method.invoke(controller, args.toArray());
                         } catch (IllegalAccessException | InvocationTargetException ignored) {}
                     });
                 } else if (method.getDeclaredAnnotation(SocketMapping.class) != null) {
@@ -81,7 +80,7 @@ public class SocketConfig {
                             else if (parameter.equals(SocketIOClient.class)) args.add(client);
                             else if (parameter.equals(requestDTO)) args.add(data);
                         }
-                        method.invoke(controllerInstance, args.toArray());
+                        method.invoke(controller, args.toArray());
                     });
                 }
             }
