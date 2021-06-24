@@ -1,5 +1,6 @@
 package com.github.kodomo.dsmpayments.domain.booth.service;
 
+import com.corundumstudio.socketio.SocketIOServer;
 import com.github.kodomo.dsmpayments.domain.booth.entity.Booth;
 import com.github.kodomo.dsmpayments.domain.booth.entity.Menu;
 import com.github.kodomo.dsmpayments.domain.booth.exception.*;
@@ -26,6 +27,7 @@ public class BoothServiceImpl implements BoothService {
     private final UserRepository userRepository;
     private final ReceiptIntegrate receiptIntegrate;
     private final TokenProvider tokenProvider;
+    private final SocketIOServer socketIOServer;
 
     @Override
     public String login(String boothId, String password) {
@@ -61,10 +63,12 @@ public class BoothServiceImpl implements BoothService {
     }
 
     @Override
-    public ReceiptDTO pay(Integer menuId, String userUuid) {
+    public ReceiptDTO pay(String boothId, Integer menuId, String userUuid) {
         Menu menu = menuRepository.findById(menuId).orElseThrow(MenuNotFoundException::new);
         User user = userRepository.findByUserUuid(userUuid).orElseThrow(UserNotFoundException::new);
-        Booth booth = boothRepository.findById(menu.getBoothId()).orElseThrow(BoothNotFoundException::new);
+        Booth booth = boothRepository.findById(boothId).orElseThrow(BoothNotFoundException::new);
+
+        if (!menu.getBoothId().equals(boothId)) { throw new UnauthorizedBoothException(); }
 
         if (!(user.isValidPayment(menu.getPrice()) && user.isValidPayment(menu.getPrice()))) {
             throw new InvalidRequestException();
@@ -77,12 +81,19 @@ public class BoothServiceImpl implements BoothService {
                 ReceiptSender.USER
         ));
 
-        user.takeCoin(receiptDTO.getFinalValue()); // receipt
-        booth.takeCoin(receiptDTO.getRequestValue());
+        user.takeCoin(receiptDTO.getFinalValue());
+        booth.giveCoin(receiptDTO.getRequestValue());
 
         userRepository.save(user);
         boothRepository.save(booth);
 
         return receiptDTO;
+    }
+
+    @Override
+    public void permitPayment(String boothId, String userUuid) {
+        System.out.println(userUuid);
+        socketIOServer.getRoomOperations(boothId).sendEvent(
+                "booth-payment-permission", userUuid);
     }
 }
