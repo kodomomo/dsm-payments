@@ -14,11 +14,11 @@ public class TokenProvider {
     @Value("${auth.jwt.secret}")
     private String secretKey;
 
-    public String generateAccessToken(Integer studentNumber, String type) {
+    public String generateAccessToken(String uuid, String type) {
         return Jwts.builder()
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 86400000))
-                .setSubject(studentNumber.toString())
+                .setSubject(uuid)
                 .claim("type", type)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
@@ -42,9 +42,9 @@ public class TokenProvider {
         }
     }
 
-    public int parseAccessToken(String token) {
-        return Integer.parseInt(Jwts.parser().setSigningKey(secretKey)
-                .parseClaimsJws(token).getBody().getSubject());
+    public String parseAccessToken(String token) {
+        return Jwts.parser().setSigningKey(secretKey)
+                .parseClaimsJws(token).getBody().getSubject();
     }
 
     public boolean checkTokenType(String token, String type) {

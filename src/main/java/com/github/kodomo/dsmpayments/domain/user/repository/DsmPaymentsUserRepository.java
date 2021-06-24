@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface DsmPaymentsUserRepository extends CrudRepository<User, Integer> {
     Optional<User> findByUserNumber(Integer userNumber);
+
+    Optional<User> findByUserUuid(String userUuid);
 }

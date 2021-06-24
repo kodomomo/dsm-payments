@@ -22,7 +22,7 @@ public class ReceiptService implements ReceiptIntegrate {
     private final SocketIOServer socketIOServer;
 
     @Override
-    public void registerReceipt(ReceiptDTO receiptDTO) {
+    public ReceiptDTO registerReceipt(ReceiptDTO receiptDTO) {
         Receipt receipt = repository.save(Receipt.of(receiptDTO));
         User user = receiptDTO.getUser();
 
@@ -31,6 +31,8 @@ public class ReceiptService implements ReceiptIntegrate {
             socketIOServer.getRoomOperations(userId)
                     .sendEvent("receipt", ReceiptDTO.of(receipt));
         }
+
+        return ReceiptDTO.of(receipt);
     }
 
     @Override

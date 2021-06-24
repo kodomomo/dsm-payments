@@ -26,21 +26,18 @@ public class UserServiceImpl implements UserService {
 
         if (!user.checkPassword(password)) { throw new LoginFailedException(); }
 
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-
-        } catch (Exception exception) {
-            System.out.println(exception.getMessage());
-        }
-
-        if (!user.getPassword().equals(password)) { throw new LoginFailedException(); }
-
-        return tokenProvider.generateAccessToken(user.getNumber(), "user");
+        return tokenProvider.generateAccessToken(String.valueOf(user.getNumber()), "user");
     }
 
     @Override
     public User getUser(Integer userNumber) {
         return userRepository.findByUserNumber(userNumber)
+                .orElseThrow(UserNotFoundException::new);
+    }
+
+    @Override
+    public User getUserByUuid(String userUuid) {
+        return userRepository.findByUserUuid(userUuid)
                 .orElseThrow(UserNotFoundException::new);
     }
 }

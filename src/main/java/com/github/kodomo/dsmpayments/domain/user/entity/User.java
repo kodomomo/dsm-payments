@@ -15,6 +15,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
+
     @Id
     private Integer userNumber;
 
@@ -26,4 +27,19 @@ public class User {
 
     @Column( nullable = false)
     private Integer coin;
+
+    public User takeCoin(Integer coin) {
+        this.coin -= coin;
+        return this;
+    }
+
+    public User giveCoin(Integer coin) {
+        this.coin += coin;
+        return this;
+    }
+
+    public Boolean isValidPayment(Integer coin) {
+        return this.coin - coin >= 0;
+    }
+
 }

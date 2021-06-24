@@ -12,6 +12,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @RequiredArgsConstructor
@@ -38,12 +39,12 @@ public class TokenHandler implements HandlerInterceptor {
         if (jwtRequired) {
             String token = tokenProvider.resolveAccessToken(request);
             if (tokenProvider.validateToken(token)) {
-                int userNumber = tokenProvider.parseAccessToken(token);
+                String uuid = tokenProvider.parseAccessToken(token);
                 SecurityContext securityContext = SecurityContextHolder.getContext();
                 securityContext.setAuthentication(new Authentication() {
                     @Override
                     public Collection<? extends GrantedAuthority> getAuthorities() {
-                        return null;
+                        return new ArrayList<>();
                     }
 
                     @Override
@@ -58,12 +59,12 @@ public class TokenHandler implements HandlerInterceptor {
 
                     @Override
                     public Object getPrincipal() {
-                        return userNumber;
+                        return uuid;
                     }
 
                     @Override
                     public boolean isAuthenticated() {
-                        return false;
+                        return true;
                     }
 
                     @Override
