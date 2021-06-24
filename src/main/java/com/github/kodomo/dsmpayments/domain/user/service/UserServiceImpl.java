@@ -34,4 +34,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUserNumber(userNumber)
                 .orElseThrow(UserNotFoundException::new);
     }
+
+    @Override
+    public User getUserByUuid(String userUuid) {
+        return userRepository.findByUserUuid(userUuid)
+                .orElseThrow(UserNotFoundException::new);
+    }
 }

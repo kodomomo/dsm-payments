@@ -6,4 +6,6 @@ public interface UserService {
     public String login(String id, String password);
 
     public User getUser(Integer userNumber);
+
+    public User getUserByUuid(String userUuid);
 }
