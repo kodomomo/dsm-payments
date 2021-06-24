@@ -12,6 +12,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @RequiredArgsConstructor
@@ -43,7 +44,7 @@ public class TokenHandler implements HandlerInterceptor {
                 securityContext.setAuthentication(new Authentication() {
                     @Override
                     public Collection<? extends GrantedAuthority> getAuthorities() {
-                        return null;
+                        return new ArrayList<>();
                     }
 
                     @Override
@@ -63,7 +64,7 @@ public class TokenHandler implements HandlerInterceptor {
 
                     @Override
                     public boolean isAuthenticated() {
-                        return false;
+                        return true;
                     }
 
                     @Override
