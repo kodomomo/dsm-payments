@@ -14,5 +14,7 @@ public interface BoothService {
 
     public Integer deleteMenu(String boothId, Integer menuId);
 
-    public ReceiptDTO pay(Integer menuId, String userUuid);
+    public ReceiptDTO pay(String boothId, Integer menuId, String userUuid);
+
+    public void permitPayment(String boothId, String userUuid);
 }
