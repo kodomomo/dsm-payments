@@ -46,6 +46,7 @@ public class SocketConfig {
     public SocketIOServer socketIOServer() {
         com.corundumstudio.socketio.Configuration config = new com.corundumstudio.socketio.Configuration();
         config.setPort(port);
+        config.setOrigin("*");
         server = new SocketIOServer(config);
         server.start();
         setup();
@@ -59,7 +60,7 @@ public class SocketConfig {
             for (Method method : controllerClass.getDeclaredMethods()) {
                 if (method.getDeclaredAnnotation(SocketConnect.class) != null ||
                         method.getDeclaredAnnotation(SocketDisConnect.class) != null) {
-                    server.addConnectListener(client -> {
+                        server.addConnectListener(client -> {
                         try {
                             List<Object> args = new ArrayList<>();
                             for (Class<?> parameter : method.getParameterTypes()) {
@@ -100,7 +101,7 @@ public class SocketConfig {
         String path = SOCKET_CONTROLLER_PATH.replace('.', '/');
         URL pathUrl = classLoader.getResource(path);
         assert pathUrl != null;
-        File pathDirectory = new File(pathUrl.getFile());
+        File pathDirectory = new File(pathUrl.getPath().replaceAll("%20", " "));
         if (pathDirectory.isDirectory()) {
             return findClassesFromDirectory(pathDirectory, SOCKET_CONTROLLER_PATH);
         } else {
