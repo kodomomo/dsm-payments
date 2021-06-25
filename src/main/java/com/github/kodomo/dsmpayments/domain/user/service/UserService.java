@@ -8,4 +8,6 @@ public interface UserService {
     public User getUser(Integer userNumber);
 
     public User getUserByUuid(String userUuid);
+
+    public Integer getNumOfBoothsUsedByUser(Integer userNumber);
 }
