@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ReceiptRepository extends CrudRepository<Receipt, Long> {
 
@@ -19,4 +21,9 @@ public interface ReceiptRepository extends CrudRepository<Receipt, Long> {
 
     Page<Receipt> findAllByUser(User user, Pageable pageable);
     Page<Receipt> findAllByBooth(Booth booth, Pageable pageable);
+
+    @Query(
+            value = "select count(r.seller_id) from ( SELECT distinct seller_id from tbl_receipt where user_number = ?1) as r"
+            , nativeQuery = true)
+    Integer countBoothsUsedByUser(User user);
 }
