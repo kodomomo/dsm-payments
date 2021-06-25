@@ -13,4 +13,5 @@ public class GetUserResponse {
     private String name;
 
     private Integer coin;
+
 }

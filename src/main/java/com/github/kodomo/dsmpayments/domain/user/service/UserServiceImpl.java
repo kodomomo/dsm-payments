@@ -1,5 +1,6 @@
 package com.github.kodomo.dsmpayments.domain.user.service;
 
+import com.github.kodomo.dsmpayments.domain.receipt.integrate.ReceiptIntegrate;
 import com.github.kodomo.dsmpayments.domain.user.entity.DMSUser;
 import com.github.kodomo.dsmpayments.domain.user.entity.User;
 import com.github.kodomo.dsmpayments.domain.user.exception.LoginFailedException;
@@ -16,6 +17,7 @@ import java.security.MessageDigest;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final ReceiptIntegrate receiptIntegrate;
 
     private final TokenProvider tokenProvider;
 
@@ -39,5 +41,11 @@ public class UserServiceImpl implements UserService {
     public User getUserByUuid(String userUuid) {
         return userRepository.findByUserUuid(userUuid)
                 .orElseThrow(UserNotFoundException::new);
+    }
+
+    @Override
+    public Integer getNumOfBoothsUsedByUser(Integer userNumber) {
+        User user = userRepository.findByUserNumber(userNumber).orElseThrow(UserNotFoundException::new);
+        return receiptIntegrate.getNumOfBoothsUsedByUser(user);
     }
 }

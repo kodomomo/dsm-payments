@@ -70,7 +70,7 @@ public class BoothServiceImpl implements BoothService {
 
         if (!menu.getBoothId().equals(boothId)) { throw new UnauthorizedBoothException(); }
 
-        if (!(user.isValidPayment(menu.getPrice()) && user.isValidPayment(menu.getPrice()))) {
+        if (!(user.isValidPayment(menu.getPrice()) && booth.isValidPayment(menu.getPrice()))) {
             throw new InvalidRequestException();
         }
 
@@ -92,8 +92,12 @@ public class BoothServiceImpl implements BoothService {
 
     @Override
     public void permitPayment(String boothId, String userUuid) {
-        System.out.println(userUuid);
         socketIOServer.getRoomOperations(boothId).sendEvent(
                 "booth-payment-permission", userUuid);
+    }
+
+    @Override
+    public Booth getBooth(String boothId) {
+        return boothRepository.findById(boothId).orElseThrow(BoothNotFoundException::new);
     }
 }

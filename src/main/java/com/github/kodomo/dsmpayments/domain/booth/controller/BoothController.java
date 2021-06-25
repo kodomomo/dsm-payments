@@ -5,8 +5,10 @@ import com.github.kodomo.dsmpayments.domain.booth.controller.payload.request.Cre
 import com.github.kodomo.dsmpayments.domain.booth.controller.payload.request.PaymentPermissionRequest;
 import com.github.kodomo.dsmpayments.domain.booth.controller.payload.request.PaymentRequest;
 import com.github.kodomo.dsmpayments.domain.booth.controller.payload.response.BoothLoginResponse;
+import com.github.kodomo.dsmpayments.domain.booth.controller.payload.response.GetBoothResponse;
 import com.github.kodomo.dsmpayments.domain.booth.controller.payload.response.GetMenusResponse;
 import com.github.kodomo.dsmpayments.domain.booth.controller.payload.response.PaymentResponse;
+import com.github.kodomo.dsmpayments.domain.booth.entity.Booth;
 import com.github.kodomo.dsmpayments.domain.booth.service.BoothService;
 import com.github.kodomo.dsmpayments.domain.receipt.service.dto.ReceiptDTO;
 import com.github.kodomo.dsmpayments.infra.token.JWTRequired;
@@ -21,6 +23,20 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class BoothController {
     private final BoothService boothService;
+
+    @JWTRequired
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public GetBoothResponse getBooth(@AuthenticationPrincipal Object boothId) {
+        Booth booth = boothService.getBooth((String) boothId);
+
+        return GetBoothResponse.builder()
+                .id(booth.getBoothId())
+                .name(booth.getBoothName())
+                .coin(booth.getCoin())
+                .totalCoin(booth.getTotalCoin())
+                .build();
+    }
 
     @PostMapping("/auth")
     @ResponseStatus(HttpStatus.OK)

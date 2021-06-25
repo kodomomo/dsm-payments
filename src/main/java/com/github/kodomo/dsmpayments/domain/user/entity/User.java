@@ -41,5 +41,4 @@ public class User {
     public Boolean isValidPayment(Integer coin) {
         return this.coin - coin >= 0;
     }
-
 }

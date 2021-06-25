@@ -59,4 +59,8 @@ public class ReceiptService implements ReceiptIntegrate {
         return ReceiptPageDTO.of(receiptPages);
     }
 
+    @Override
+    public Integer getNumOfBoothsUsedByUser(User user) {
+        return repository.countBoothsUsedByUser(user);
+    }
 }
