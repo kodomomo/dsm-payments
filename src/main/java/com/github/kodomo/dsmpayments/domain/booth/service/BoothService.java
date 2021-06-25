@@ -1,5 +1,6 @@
 package com.github.kodomo.dsmpayments.domain.booth.service;
 
+import com.github.kodomo.dsmpayments.domain.booth.entity.Booth;
 import com.github.kodomo.dsmpayments.domain.booth.entity.Menu;
 import com.github.kodomo.dsmpayments.domain.receipt.service.dto.ReceiptDTO;
 
@@ -17,4 +18,6 @@ public interface BoothService {
     public ReceiptDTO pay(String boothId, Integer menuId, String userUuid);
 
     public void permitPayment(String boothId, String userUuid);
+
+    public Booth getBooth(String boothId);
 }
