@@ -70,7 +70,7 @@ public class BoothServiceImpl implements BoothService {
 
         if (!menu.getBoothId().equals(boothId)) { throw new UnauthorizedBoothException(); }
 
-        if (!(user.isValidPayment(menu.getPrice()) && user.isValidPayment(menu.getPrice()))) {
+        if (!(user.isValidPayment(menu.getPrice()) && booth.isValidPayment(menu.getPrice()))) {
             throw new InvalidRequestException();
         }
 
