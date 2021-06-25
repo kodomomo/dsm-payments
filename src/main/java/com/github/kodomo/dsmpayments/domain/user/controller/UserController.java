@@ -42,6 +42,7 @@ public class UserController {
                 .name(user.getUserName())
                 .number(user.getUserNumber())
                 .coin(user.getCoin())
+                .countOfUsedBooth(userService.getNumOfBoothsUsedByUser(Integer.valueOf((String) number)))
                 .build();
     }
 
