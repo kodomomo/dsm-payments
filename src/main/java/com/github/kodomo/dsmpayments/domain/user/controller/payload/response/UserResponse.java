@@ -13,4 +13,6 @@ public class UserResponse {
     private String uuid;
 
     private Integer coin;
+
+    private Integer countOfUsedBooth;
 }
