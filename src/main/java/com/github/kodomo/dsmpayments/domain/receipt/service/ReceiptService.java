@@ -63,4 +63,9 @@ public class ReceiptService implements ReceiptIntegrate {
     public Integer getNumOfBoothsUsedByUser(User user) {
         return repository.countBoothsUsedByUser(user);
     }
+
+    @Override
+    public Integer getNumOfUsersUsingBooth(Booth booth) {
+        return repository.countUserByBooth(booth);
+    }
 }

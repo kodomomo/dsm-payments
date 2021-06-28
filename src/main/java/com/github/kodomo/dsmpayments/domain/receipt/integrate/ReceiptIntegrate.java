@@ -13,4 +13,5 @@ public interface ReceiptIntegrate {
     ReceiptPageDTO findAllForUser(User user, Pageable pageable);
     ReceiptPageDTO findAllForSeller(Booth booth, Pageable pageable);
     Integer getNumOfBoothsUsedByUser(User user);
+    Integer getNumOfUsersUsingBooth(Booth booth);
 }

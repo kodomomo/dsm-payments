@@ -4,15 +4,17 @@ import com.github.kodomo.dsmpayments.domain.booth.controller.payload.request.Boo
 import com.github.kodomo.dsmpayments.domain.booth.controller.payload.request.CreateMenuRequest;
 import com.github.kodomo.dsmpayments.domain.booth.controller.payload.request.PaymentPermissionRequest;
 import com.github.kodomo.dsmpayments.domain.booth.controller.payload.request.PaymentRequest;
-import com.github.kodomo.dsmpayments.domain.booth.controller.payload.response.BoothLoginResponse;
-import com.github.kodomo.dsmpayments.domain.booth.controller.payload.response.GetBoothResponse;
-import com.github.kodomo.dsmpayments.domain.booth.controller.payload.response.GetMenusResponse;
-import com.github.kodomo.dsmpayments.domain.booth.controller.payload.response.PaymentResponse;
+import com.github.kodomo.dsmpayments.domain.booth.controller.payload.response.*;
 import com.github.kodomo.dsmpayments.domain.booth.entity.Booth;
+import com.github.kodomo.dsmpayments.domain.booth.entity.Menu;
 import com.github.kodomo.dsmpayments.domain.booth.service.BoothService;
+import com.github.kodomo.dsmpayments.domain.receipt.integrate.ReceiptIntegrate;
 import com.github.kodomo.dsmpayments.domain.receipt.service.dto.ReceiptDTO;
+import com.github.kodomo.dsmpayments.domain.receipt.service.dto.ReceiptPageDTO;
 import com.github.kodomo.dsmpayments.infra.token.JWTRequired;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,6 +25,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class BoothController {
     private final BoothService boothService;
+    private final ReceiptIntegrate receiptIntegrate;
+
 
     @JWTRequired
     @GetMapping
@@ -35,6 +39,7 @@ public class BoothController {
                 .name(booth.getBoothName())
                 .coin(booth.getCoin())
                 .totalCoin(booth.getTotalCoin())
+                .numOfUsers(receiptIntegrate.getNumOfUsersUsingBooth(booth))
                 .build();
     }
 
@@ -49,9 +54,15 @@ public class BoothController {
     @PostMapping("/menu")
     @JWTRequired
     @ResponseStatus(HttpStatus.CREATED)
-    public void createMenu(@AuthenticationPrincipal Object boothId, @RequestBody CreateMenuRequest request) {
+    public CreateMenuResponse createMenu(@AuthenticationPrincipal Object boothId, @RequestBody CreateMenuRequest request) {
         System.out.println(boothId);
-        boothService.createMenu((String) boothId, request.getName(), request.getPrice());
+        Menu menu = boothService.createMenu((String) boothId, request.getName(), request.getPrice());
+        return CreateMenuResponse.builder()
+                .menuId(menu.getMenuId())
+                .name(menu.getName())
+                .price(menu.getPrice())
+                .boothId(menu.getBoothId())
+                .build();
     }
 
     @GetMapping("/menu")
@@ -66,6 +77,19 @@ public class BoothController {
     @ResponseStatus(HttpStatus.OK)
     public void deleteMenus(@AuthenticationPrincipal Object boothId, @RequestParam("id") String menuId) {
         boothService.deleteMenu((String) boothId, Integer.parseInt(menuId));
+    }
+
+    @GetMapping("/payment")
+    @JWTRequired
+    @ResponseStatus(HttpStatus.OK)
+    public ReceiptsResponse getPayments(
+            @AuthenticationPrincipal Object boothId,
+            @RequestParam("page") String page,
+            @RequestParam("size") String size
+    ) {
+        Booth booth = boothService.getBooth((String) boothId);
+        return ReceiptsResponse.of(receiptIntegrate.findAllForSeller(
+                booth, PageRequest.of(Integer.parseInt(page), Integer.parseInt(size), Sort.by("id").descending())));
     }
 
     @PostMapping("/menu/payment")
