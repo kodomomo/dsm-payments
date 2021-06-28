@@ -13,4 +13,6 @@ public class GetBoothResponse {
     private Integer coin;
 
     private Integer totalCoin;
+
+    private Integer numOfUsers;
 }
