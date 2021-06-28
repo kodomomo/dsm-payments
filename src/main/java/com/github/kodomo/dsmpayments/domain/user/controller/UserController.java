@@ -7,14 +7,12 @@ import com.github.kodomo.dsmpayments.domain.user.controller.payload.response.Use
 import com.github.kodomo.dsmpayments.domain.user.entity.User;
 import com.github.kodomo.dsmpayments.domain.user.service.UserService;
 import com.github.kodomo.dsmpayments.infra.token.JWTRequired;
-import com.github.kodomo.dsmpayments.infra.token.TokenHandler;
 import com.github.kodomo.dsmpayments.infra.token.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import javax.lang.model.type.IntersectionType;
 
 @RestController
 @RequestMapping("/user")
