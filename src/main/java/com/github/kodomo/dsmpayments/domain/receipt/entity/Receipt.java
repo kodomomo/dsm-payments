@@ -27,7 +27,7 @@ public class Receipt {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "seller_id")
+    @JoinColumn(name = "booth_id")
     private Booth booth;
 
     @Enumerated(EnumType.STRING)

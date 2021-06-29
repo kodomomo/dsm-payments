@@ -6,6 +6,8 @@ import com.github.kodomo.dsmpayments.domain.booth.entity.Booth;
 import com.github.kodomo.dsmpayments.domain.user.entity.User;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface ReceiptIntegrate {
     ReceiptDTO registerReceipt(ReceiptDTO receiptDTO);
     ReceiptPageDTO findAll(Pageable pageable);
@@ -14,4 +16,5 @@ public interface ReceiptIntegrate {
     ReceiptPageDTO findAllForSeller(Booth booth, Pageable pageable);
     Integer getNumOfBoothsUsedByUser(User user);
     Integer getNumOfUsersUsingBooth(Booth booth);
+    List<Long> userCoinUseOfHour();
 }

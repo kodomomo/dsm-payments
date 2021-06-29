@@ -4,10 +4,13 @@ import com.github.kodomo.dsmpayments.domain.admin.service.status.dto.BoothStatus
 import com.github.kodomo.dsmpayments.domain.admin.service.status.dto.CoinStatus;
 import com.github.kodomo.dsmpayments.domain.admin.service.status.dto.UserStatus;
 import com.github.kodomo.dsmpayments.domain.booth.repository.BoothRepository;
+import com.github.kodomo.dsmpayments.domain.receipt.integrate.ReceiptIntegrate;
+import com.github.kodomo.dsmpayments.domain.receipt.service.dto.BoothDTO;
 import com.github.kodomo.dsmpayments.domain.user.repository.DsmPaymentsUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,10 +20,23 @@ public class AdminStatusServiceImpl implements AdminStatusService {
 
     private final DsmPaymentsUserRepository userRepository;
     private final BoothRepository boothRepository;
+    private final ReceiptIntegrate receiptIntegrate;
 
     @Override
     public CoinStatus getAllStatus() {
-        return null;
+        double allBoothCoinAverage = boothRepository.allBoothCoinAverage();
+        double allUserCoinAverage = userRepository.allUserCoinAverage();
+        List<Long> userCoinUseOfHour = receiptIntegrate.userCoinUseOfHour();
+        List<Long> boothCoinIncomeOfHour = null;
+        List<Long> boothCoinExpensesOfHour = null;
+        List<BoothDTO> totalCoinOfBooths = boothRepository.findAll()
+                .stream().map(BoothDTO::of)
+                .collect(Collectors.toList());
+
+        return new CoinStatus(
+                allBoothCoinAverage, allUserCoinAverage, userCoinUseOfHour,
+                boothCoinIncomeOfHour, boothCoinExpensesOfHour, totalCoinOfBooths
+        );
     }
 
     @Override

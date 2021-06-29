@@ -13,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class ReceiptService implements ReceiptIntegrate {
@@ -67,5 +69,10 @@ public class ReceiptService implements ReceiptIntegrate {
     @Override
     public Integer getNumOfUsersUsingBooth(Booth booth) {
         return repository.countUserByBooth(booth);
+    }
+
+    @Override
+    public List<Long> userCoinUseOfHour() {
+        return repository.userCoinUseOfHour();
     }
 }

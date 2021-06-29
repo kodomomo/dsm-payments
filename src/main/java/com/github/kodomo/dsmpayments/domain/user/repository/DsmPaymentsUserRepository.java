@@ -14,4 +14,7 @@ public interface DsmPaymentsUserRepository extends CrudRepository<User, Integer>
 
     @Query("select user from tbl_user user where user.userName like %?1%")
     List<User> findAllUserStatus(String searchWord);
+
+    @Query(value = "SELECT (sum(coin) / count(*)) as value FROM tbl_user", nativeQuery = true)
+    double allUserCoinAverage();
 }

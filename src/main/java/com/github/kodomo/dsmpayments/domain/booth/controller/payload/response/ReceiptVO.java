@@ -10,30 +10,30 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ReceiptVO {
-    private long id;
+    private final long id;
 
-    private Integer userNumber;
+    private final Integer userNumber;
 
-    private String userName;
+    private final String userName;
 
-    private String boothName;
+    private final String boothName;
 
-    private ReceiptSender sender;
+    private final ReceiptSender sender;
 
-    private int requestedValue;
+    private final int requestedValue;
 
-    private int tax;
+    private final int tax;
 
-    private int finalValue;
+    private final int finalValue;
 
-    private LocalDateTime createAt;
+    private final LocalDateTime createAt;
 
     public static ReceiptVO of(ReceiptDTO receiptDTO) {
         return new ReceiptVO(
                 receiptDTO.getId(),
-                receiptDTO.getUser().getUserNumber(),
-                receiptDTO.getUser().getUserName(),
-                receiptDTO.getBooth().getBoothName(),
+                receiptDTO.getUserEntity().getUserNumber(),
+                receiptDTO.getUserEntity().getUserName(),
+                receiptDTO.getBoothEntity().getBoothName(),
                 receiptDTO.getSender(),
                 receiptDTO.getRequestValue(),
                 receiptDTO.getTax(),

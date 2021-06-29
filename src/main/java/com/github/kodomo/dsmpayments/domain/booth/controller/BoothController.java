@@ -98,8 +98,8 @@ public class BoothController {
     public PaymentResponse payment(@AuthenticationPrincipal Object boothId, @RequestBody PaymentRequest request) {
         ReceiptDTO receipt = boothService.pay((String) boothId, request.getMenuId(), request.getUserUuid());
         return PaymentResponse.builder()
-                .boothId(receipt.getBooth().getBoothId())
-                .userUuid(receipt.getUser().getUserUuid())
+                .boothId(receipt.getBoothEntity().getBoothId())
+                .userUuid(receipt.getUserEntity().getUserUuid())
                 .requestedCoin(receipt.getRequestValue())
                 .tax(receipt.getTax())
                 .finalCoin(receipt.getFinalValue())

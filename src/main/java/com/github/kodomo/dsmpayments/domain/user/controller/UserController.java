@@ -4,6 +4,7 @@ import com.github.kodomo.dsmpayments.domain.user.controller.payload.request.User
 import com.github.kodomo.dsmpayments.domain.user.controller.payload.response.GetUserResponse;
 import com.github.kodomo.dsmpayments.domain.user.controller.payload.response.UserLoginResponse;
 import com.github.kodomo.dsmpayments.domain.user.controller.payload.response.UserResponse;
+import com.github.kodomo.dsmpayments.domain.user.entity.User;
 import com.github.kodomo.dsmpayments.domain.user.service.UserService;
 import com.github.kodomo.dsmpayments.infra.token.JWTRequired;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +16,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
-    private final UserService userService;
 
-    private final TokenProvider tokenProvider;
+    private final UserService userService;
 
     @PostMapping("/auth")
     @ResponseStatus(HttpStatus.OK)

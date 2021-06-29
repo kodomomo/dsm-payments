@@ -31,4 +31,7 @@ public interface ReceiptRepository extends CrudRepository<Receipt, Long> {
             value = "select count(r.user_number) from ( SELECT distinct user_number from tbl_receipt where seller_id = ?1) as r"
             , nativeQuery = true)
     Integer countUserByBooth(Booth booth);
+
+    @Query(value = "SELECT sum(requested_value) FROM tbl_receipt group by HOUR(created_at)", nativeQuery = true)
+    List<Long> userCoinUseOfHour();
 }
