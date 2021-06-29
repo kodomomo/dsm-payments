@@ -25,15 +25,18 @@ public class AdminPayServiceImpl implements AdminPayService {
         User user = userRepository.findByUserNumber(userNumber).orElseThrow(UserNotFoundException::new);
         ReceiptDTO resultDTO = registerReceipt(user, null, value);
 
-        user.giveCoin(resultDTO.getFinalValue());
+        userRepository.save(user.giveCoin(resultDTO.getFinalValue()));
     }
 
     @Override
     public void depositTOBooth(String boothId, int value) {
         Booth booth = boothRepository.findById(boothId).orElseThrow(BoothNotFoundException::new);
         ReceiptDTO resultDTO = registerReceipt(null, booth, value);
+        int finalValue = resultDTO.getFinalValue();
+        if (finalValue > 0) booth.giveCoin(finalValue);
+        else booth.takeCoin(-1 * finalValue);
 
-        booth.giveCoin(resultDTO.getFinalValue());
+        boothRepository.save(booth);
     }
 
     private ReceiptDTO registerReceipt(User user, Booth booth, int value) {

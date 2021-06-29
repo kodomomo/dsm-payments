@@ -24,12 +24,12 @@ public class ReceiptService implements ReceiptIntegrate {
     @Override
     public ReceiptDTO registerReceipt(ReceiptDTO receiptDTO) {
         Receipt receipt = repository.save(Receipt.of(receiptDTO));
-        User user = receiptDTO.getUser();
+        User user = receiptDTO.getUserEntity();
 
         if (user != null) {
             String userId = user.getUserNumber().toString();
             socketIOServer.getRoomOperations(userId)
-                    .sendEvent("receipt", ReceiptDTO.of(receipt));
+                    .sendEvent("pay-successful", ReceiptDTO.of(receipt));
         }
 
         return ReceiptDTO.of(receipt);

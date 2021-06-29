@@ -3,13 +3,13 @@ package com.github.kodomo.dsmpayments.domain.receipt.entity;
 import com.github.kodomo.dsmpayments.domain.booth.entity.Booth;
 import com.github.kodomo.dsmpayments.domain.receipt.service.dto.ReceiptDTO;
 import com.github.kodomo.dsmpayments.domain.user.entity.User;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Getter
 @NoArgsConstructor
@@ -42,7 +42,7 @@ public class Receipt {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    private Receipt(User user, Booth booth, ReceiptSender sender, int requestedValue) {
+    private Receipt(User user, Booth booth, ReceiptSender sender, int requestedValue, LocalDateTime createdAt) {
         this.user = user;
         this.booth = booth;
         this.sender = sender;
@@ -52,14 +52,16 @@ public class Receipt {
             this.tax = Math.round((float) this.requestedValue * (TAX / (float) 100));
         }
         this.finalValue = this.requestedValue - this.tax;
+        this.createdAt = createdAt;
     }
 
     public static Receipt of(ReceiptDTO receiptDTO) {
         return new Receipt(
-                receiptDTO.getUser(),
-                receiptDTO.getBooth(),
+                receiptDTO.getUserEntity(),
+                receiptDTO.getBoothEntity(),
                 receiptDTO.getSender(),
-                receiptDTO.getRequestValue()
+                receiptDTO.getRequestValue(),
+                LocalDateTime.now(ZoneId.of("Asia/Seoul"))
         );
     }
 

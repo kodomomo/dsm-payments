@@ -39,7 +39,7 @@ public class Booth {
     public Booth giveCoin(Integer coin) {
         if (coin < 0) { return takeCoin(coin * -1); }
         this.coin += coin;
-        totalCoin += coin;
+        this.totalCoin += coin;
         return this;
     }
 
