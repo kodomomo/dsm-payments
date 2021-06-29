@@ -38,6 +38,7 @@ public class Booth {
 
     public Booth giveCoin(Integer coin) {
         this.coin += coin;
+        this.totalCoin += coin;
         return this;
     }
 
