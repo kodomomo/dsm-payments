@@ -92,6 +92,7 @@ public class BoothServiceImpl implements BoothService {
 
     @Override
     public void permitPayment(String boothId, String userUuid) {
+        userRepository.findByUserUuid(userUuid).orElseThrow(UserNotFoundException::new);
         socketIOServer.getRoomOperations(boothId).sendEvent(
                 "booth-payment-permission", userUuid);
     }
