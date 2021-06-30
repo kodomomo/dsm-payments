@@ -7,6 +7,7 @@ import com.github.kodomo.dsmpayments.domain.user.controller.payload.response.Use
 import com.github.kodomo.dsmpayments.domain.user.entity.User;
 import com.github.kodomo.dsmpayments.domain.user.service.UserService;
 import com.github.kodomo.dsmpayments.infra.token.JWTRequired;
+import com.github.kodomo.dsmpayments.infra.token.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,6 +25,14 @@ public class UserController {
     public UserLoginResponse login(@RequestBody UserLoginRequest request) {
         return UserLoginResponse.builder()
                 .accessToken(userService.login(request.getId(), request.getPassword()))
+                .build();
+    }
+
+    @PostMapping("/auth/teacher")
+    @ResponseStatus(HttpStatus.OK)
+    public UserLoginResponse teacherLogin(@RequestBody UserLoginRequest request) {
+        return UserLoginResponse.builder()
+                .accessToken(userService.teacherLogin(request.getId(), request.getPassword()))
                 .build();
     }
 

@@ -21,12 +21,12 @@ public interface ReceiptRepository extends CrudRepository<Receipt, Long> {
     Page<Receipt> findAllByBooth(Booth booth, Pageable pageable);
 
     @Query(
-            value = "select count(r.seller_id) from ( SELECT distinct seller_id from tbl_receipt where user_number = ?1) as r"
+            value = "select count(r.booth_id) from ( SELECT distinct booth_id from tbl_receipt where user_number = ?1) as r"
             , nativeQuery = true)
     Integer countBoothsUsedByUser(User user);
 
     @Query(
-            value = "select count(r.user_number) from ( SELECT distinct user_number from tbl_receipt where seller_id = ?1) as r"
+            value = "select count(r.user_number) from ( SELECT distinct user_number from tbl_receipt where booth_id = ?1) as r"
             , nativeQuery = true)
     Integer countUserByBooth(Booth booth);
 

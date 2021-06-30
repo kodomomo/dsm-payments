@@ -8,8 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.util.Date;
 
 @Getter
 @NoArgsConstructor
@@ -40,9 +39,9 @@ public class Receipt {
     private int finalValue;
 
     @CreatedDate
-    private LocalDateTime createdAt;
+    private Date createdAt;
 
-    private Receipt(User user, Booth booth, ReceiptSender sender, int requestedValue, LocalDateTime createdAt) {
+    private Receipt(User user, Booth booth, ReceiptSender sender, int requestedValue, Date createdAt) {
         this.user = user;
         this.booth = booth;
         this.sender = sender;
@@ -61,7 +60,7 @@ public class Receipt {
                 receiptDTO.getBoothEntity(),
                 receiptDTO.getSender(),
                 receiptDTO.getRequestValue(),
-                LocalDateTime.now(ZoneId.of("Asia/Seoul"))
+                new Date(System.currentTimeMillis())
         );
     }
 

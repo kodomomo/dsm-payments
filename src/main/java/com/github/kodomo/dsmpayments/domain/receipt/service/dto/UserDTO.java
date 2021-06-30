@@ -12,13 +12,15 @@ public class UserDTO {
     private final int number;
     private final String name;
     private final int coin;
+    private final String uuid;
 
     public static UserDTO of(User user) {
         if (user == null) return null;
         return new UserDTO(
                 user.getUserNumber(),
                 user.getUserName(),
-                user.getCoin()
+                user.getCoin(),
+                user.getUserUuid()
         );
     }
 
