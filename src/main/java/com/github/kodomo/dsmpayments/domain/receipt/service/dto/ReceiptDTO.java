@@ -7,7 +7,7 @@ import com.github.kodomo.dsmpayments.domain.booth.entity.Booth;
 import com.github.kodomo.dsmpayments.domain.user.entity.User;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -26,7 +26,7 @@ public class ReceiptDTO {
     private final Integer tax;
     private final Integer finalValue;
     private final ReceiptSender sender;
-    private final LocalDateTime createdAt;
+    private final Date createdAt;
 
     public ReceiptDTO(User user, Booth booth, int requestValue, ReceiptSender sender) {
         this.id = null;
