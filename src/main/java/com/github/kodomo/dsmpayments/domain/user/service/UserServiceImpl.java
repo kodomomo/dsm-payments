@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
         DMSUser user = userRepository.findDMSUserById(id)
                 .orElseThrow(LoginFailedException::new);
 
-        if (!passwordEncoder.matches(password, user.getPassword())) { throw new LoginFailedException(); }
+        if (!user.checkPassword(password)) { throw new LoginFailedException(); }
 
         return tokenProvider.generateAccessToken(String.valueOf(user.getNumber()), "user");
     }
