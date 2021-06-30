@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -26,7 +27,7 @@ public class ReceiptVO {
 
     private final int finalValue;
 
-    private final LocalDateTime createAt;
+    private final Date createAt;
 
     public static ReceiptVO of(ReceiptDTO receiptDTO) {
         return new ReceiptVO(
