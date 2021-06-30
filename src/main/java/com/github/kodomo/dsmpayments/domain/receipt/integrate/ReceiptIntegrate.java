@@ -10,11 +10,12 @@ import java.util.List;
 
 public interface ReceiptIntegrate {
     ReceiptDTO registerReceipt(ReceiptDTO receiptDTO);
-    ReceiptPageDTO findAll(Pageable pageable);
-    ReceiptPageDTO findAllByQuery(String query, Pageable pageable);
-    ReceiptPageDTO findAllForUser(User user, Pageable pageable);
+    List<ReceiptDTO> findAllByQuery(String query);
+    List<ReceiptDTO> findAllForUser(User user);
     ReceiptPageDTO findAllForSeller(Booth booth, Pageable pageable);
     Integer getNumOfBoothsUsedByUser(User user);
     Integer getNumOfUsersUsingBooth(Booth booth);
     List<Long> userCoinUseOfHour();
+    List<Long> boothCoinIncomeOfHour();
+    List<Long> boothCoinExpensesOfHour();
 }

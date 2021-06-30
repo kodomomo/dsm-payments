@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -38,21 +39,17 @@ public class ReceiptService implements ReceiptIntegrate {
     }
 
     @Override
-    public ReceiptPageDTO findAll(Pageable pageable) {
-        Page<Receipt> receiptPages = repository.findAll(pageable);
-        return ReceiptPageDTO.of(receiptPages);
-    }
-    
-    @Override
-    public ReceiptPageDTO findAllByQuery(String query, Pageable pageable) {
-        Page<Receipt> receiptPages = repository.findAllByQuery(query, pageable);
-        return ReceiptPageDTO.of(receiptPages);
+    public List<ReceiptDTO> findAllByQuery(String query) {
+        return repository.findAllByQuery(query)
+                .stream().map(ReceiptDTO::of)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public ReceiptPageDTO findAllForUser(User user, Pageable pageable) {
-        Page<Receipt> receiptPages = repository.findAllByUser(user, pageable);
-        return ReceiptPageDTO.of(receiptPages);
+    public List<ReceiptDTO> findAllForUser(User user) {
+        return repository.findAllByUser(user)
+                .stream().map(ReceiptDTO::of)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -75,4 +72,15 @@ public class ReceiptService implements ReceiptIntegrate {
     public List<Long> userCoinUseOfHour() {
         return repository.userCoinUseOfHour();
     }
+
+    @Override
+    public List<Long> boothCoinIncomeOfHour() {
+        return repository.boothCoinIncomeOfHour();
+    }
+
+    @Override
+    public List<Long> boothCoinExpensesOfHour() {
+        return repository.boothCoinExpensesOfHour();
+    }
+
 }

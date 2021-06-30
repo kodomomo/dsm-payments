@@ -8,6 +8,7 @@ import com.github.kodomo.dsmpayments.domain.user.exception.UserNotFoundException
 import com.github.kodomo.dsmpayments.domain.user.repository.UserRepository;
 import com.github.kodomo.dsmpayments.infra.token.TokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.MessageDigest;
@@ -16,9 +17,11 @@ import java.security.MessageDigest;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+
     private final UserRepository userRepository;
     private final ReceiptIntegrate receiptIntegrate;
 
+    private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
 
     @Override
@@ -26,7 +29,7 @@ public class UserServiceImpl implements UserService {
         DMSUser user = userRepository.findDMSUserById(id)
                 .orElseThrow(LoginFailedException::new);
 
-        if (!user.checkPassword(password)) { throw new LoginFailedException(); }
+        if (!passwordEncoder.matches(password, user.getPassword())) { throw new LoginFailedException(); }
 
         return tokenProvider.generateAccessToken(String.valueOf(user.getNumber()), "user");
     }

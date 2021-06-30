@@ -14,12 +14,10 @@ import java.util.List;
 @Repository
 public interface ReceiptRepository extends CrudRepository<Receipt, Long> {
 
-    Page<Receipt> findAll(Pageable pageable);
-
     @Query(value = "select receipt from tbl_receipt receipt where receipt.user.userNumber like %?1% or receipt.user.userName like %?1%")
-    Page<Receipt> findAllByQuery(String query, Pageable pageable);
+    List<Receipt> findAllByQuery(String query);
 
-    Page<Receipt> findAllByUser(User user, Pageable pageable);
+    List<Receipt> findAllByUser(User user);
     Page<Receipt> findAllByBooth(Booth booth, Pageable pageable);
 
     @Query(
@@ -34,4 +32,10 @@ public interface ReceiptRepository extends CrudRepository<Receipt, Long> {
 
     @Query(value = "SELECT sum(requested_value) FROM tbl_receipt group by HOUR(created_at)", nativeQuery = true)
     List<Long> userCoinUseOfHour();
+
+    @Query(value = "SELECT sum(requested_value) FROM tbl_receipt where booth_id is not null and final_value > 0 group by HOUR(created_at)", nativeQuery = true)
+    List<Long> boothCoinIncomeOfHour();
+
+    @Query(value = "SELECT sum(requested_value) FROM tbl_receipt where booth_id is not null and final_value < 0 group by HOUR(created_at)", nativeQuery = true)
+    List<Long> boothCoinExpensesOfHour();
 }
