@@ -18,8 +18,8 @@ repositories {
     mavenCentral()
 }
 
-jar {
-    archiveName "DSM-Payments.jar";
+build {
+    jar.archiveName "DSM-Payments.jar";
 }
 
 dependencies {
