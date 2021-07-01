@@ -1,14 +1,11 @@
-package com.github.kodomo.dsmpayments.infra.config.socket.annotation;
-
-import org.springframework.stereotype.Controller;
+package com.github.kodomo.dsmpayments.infra.token;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.TYPE)
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-@Controller
-public @interface SocketController {
+public @interface JWTRequired {
 }
