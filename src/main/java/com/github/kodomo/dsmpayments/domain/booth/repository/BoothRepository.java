@@ -14,6 +14,6 @@ public interface BoothRepository extends CrudRepository<Booth, String> {
     List<Booth> findAllBoothStatus(String searchWord);
 
     @Query(value = "SELECT (sum(coin) / count(*)) as value FROM tbl_booth", nativeQuery = true)
-    double allBoothCoinAverage();
+    Double allBoothCoinAverage();
 
 }

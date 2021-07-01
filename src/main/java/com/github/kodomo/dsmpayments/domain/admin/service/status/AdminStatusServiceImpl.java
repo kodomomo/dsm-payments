@@ -24,8 +24,10 @@ public class AdminStatusServiceImpl implements AdminStatusService {
 
     @Override
     public CoinStatus getAllStatus() {
-        double allBoothCoinAverage = boothRepository.allBoothCoinAverage();
-        double allUserCoinAverage = userRepository.allUserCoinAverage();
+        Double allBoothCoinAverage = boothRepository.allBoothCoinAverage();
+        if (allBoothCoinAverage == null) allBoothCoinAverage = 0.0;
+        Double allUserCoinAverage = userRepository.allUserCoinAverage();
+        if (allUserCoinAverage == null) allUserCoinAverage = 0.0;
         List<Long> userCoinUseOfHour = receiptIntegrate.userCoinUseOfHour();
         List<Long> boothCoinIncomeOfHour = receiptIntegrate.boothCoinIncomeOfHour();
         if (boothCoinIncomeOfHour.size() < 10) boothCoinIncomeOfHour = null;

@@ -16,5 +16,5 @@ public interface DsmPaymentsUserRepository extends CrudRepository<User, Integer>
     List<User> findAllUserStatus(String searchWord);
 
     @Query(value = "SELECT (sum(coin) / count(*)) as value FROM tbl_user", nativeQuery = true)
-    double allUserCoinAverage();
+    Double allUserCoinAverage();
 }
