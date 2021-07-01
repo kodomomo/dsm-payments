@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Getter
@@ -60,7 +62,9 @@ public class Receipt {
                 receiptDTO.getBoothEntity(),
                 receiptDTO.getSender(),
                 receiptDTO.getRequestValue(),
-                new Date(System.currentTimeMillis())
+                Date.from(LocalDateTime.now()
+                        .atZone(ZoneId.of("Asia/Seoul"))
+                        .toInstant())
         );
     }
 
