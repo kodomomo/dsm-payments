@@ -3,10 +3,6 @@ server:
     port: ${SOCKET_PORT}
 
 spring:
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
   datasource:
     url: ${MYSQL_URL}
     username: ${MYSQL_USERNAME}
