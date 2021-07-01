@@ -1,3 +1,3 @@
 FROM openjdk:11
-COPY ./build/libs/*.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+COPY ./build/libs/*.jar /
+ENTRYPOINT ["java","-jar","/com.github.kodomo-1.0.jar"]
