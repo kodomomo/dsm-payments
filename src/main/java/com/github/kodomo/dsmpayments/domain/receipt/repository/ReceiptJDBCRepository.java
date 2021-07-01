@@ -19,7 +19,7 @@ public class ReceiptJDBCRepository {
     public List<Long> boothCoinIncomeOfHour() {
 
         String query = "SELECT @hour_count:=@hour_count+1 as hour, " +
-                "IFNULL((select sum(final_value) from tbl_receipt where  HOUR(created_at) = @hour_count GROUP BY HOUR(created_at)), 0) as coin " +
+                "IFNULL((select sum(final_value) from tbl_receipt where HOUR(created_at) = @hour_count and final_value > 0 GROUP BY HOUR(created_at)), 0) as coin " +
                 "FROM tbl_receipt where @hour_count < 17 and booth_id is not null and final_value > 0;";
         jdbcTemplate.execute("set @hour_count:=7");
         return jdbcTemplate.query(query, mapper);
@@ -27,7 +27,7 @@ public class ReceiptJDBCRepository {
 
     public List<Long> boothCoinExpensesOfHour() {
         String query = "SELECT @hour_count:=@hour_count+1 as hour, " +
-                "IFNULL((select sum(final_value) from tbl_receipt where  HOUR(created_at) = @hour_count GROUP BY HOUR(created_at)), 0) as coin " +
+                "IFNULL((select sum(final_value) from tbl_receipt where HOUR(created_at) = @hour_count and final_value < 0 GROUP BY HOUR(created_at)), 0) as coin " +
                 "FROM tbl_receipt where @hour_count < 17 and booth_id is not null and final_value < 0;";
         jdbcTemplate.execute("set @hour_count:=7");
         return jdbcTemplate.query(query, mapper);
