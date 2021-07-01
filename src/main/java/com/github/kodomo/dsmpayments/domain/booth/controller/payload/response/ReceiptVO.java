@@ -13,7 +13,7 @@ import java.util.Date;
 public class ReceiptVO {
     private final long id;
 
-    private final Integer userNumber;
+    private final String userNumber;
 
     private final String userName;
 

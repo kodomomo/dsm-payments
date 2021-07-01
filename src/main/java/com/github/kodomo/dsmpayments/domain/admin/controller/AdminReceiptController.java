@@ -18,7 +18,7 @@ public class AdminReceiptController {
     private final ReceiptIntegrate receiptIntegrate;
 
     @GetMapping
-    public List<ReceiptDTO> findReceipts(@RequestParam("search") String searchWord) {
+    public List<ReceiptDTO> findReceipts(@RequestParam(value = "search", defaultValue = "") String searchWord) {
         return receiptIntegrate.findAllByQuery(searchWord);
     }
 

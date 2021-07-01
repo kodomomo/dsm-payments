@@ -10,7 +10,7 @@ import lombok.Getter;
 public class UserStatus {
 
     private final String uuid;
-    private final int number;
+    private final String number;
     private final String name;
     private final int coin;
 

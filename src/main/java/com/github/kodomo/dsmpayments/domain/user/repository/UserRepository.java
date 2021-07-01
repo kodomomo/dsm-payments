@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface UserRepository {
     public Optional<DMSUser> findDMSUserById(String id);
 
-    public Optional<User> findByUserNumber(Integer userNumber);
+    public Optional<User> findByUserNumber(String userNumber);
 
     public Optional<User> findByUserUuid(String userUuid);
 

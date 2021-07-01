@@ -9,7 +9,7 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserDTO {
 
-    private final int number;
+    private final String number;
     private final String name;
     private final int coin;
     private final String uuid;

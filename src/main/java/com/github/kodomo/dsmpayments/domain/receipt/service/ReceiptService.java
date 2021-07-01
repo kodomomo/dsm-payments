@@ -3,6 +3,7 @@ package com.github.kodomo.dsmpayments.domain.receipt.service;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.github.kodomo.dsmpayments.domain.receipt.entity.Receipt;
 import com.github.kodomo.dsmpayments.domain.receipt.integrate.ReceiptIntegrate;
+import com.github.kodomo.dsmpayments.domain.receipt.repository.ReceiptJDBCRepository;
 import com.github.kodomo.dsmpayments.domain.receipt.repository.ReceiptRepository;
 import com.github.kodomo.dsmpayments.domain.receipt.service.dto.ReceiptDTO;
 import com.github.kodomo.dsmpayments.domain.receipt.service.dto.ReceiptPageDTO;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 public class ReceiptService implements ReceiptIntegrate {
 
     private final ReceiptRepository repository;
+    private final ReceiptJDBCRepository receiptJDBCRepository;
 
     private final SocketIOServer socketIOServer;
 
@@ -40,7 +42,7 @@ public class ReceiptService implements ReceiptIntegrate {
 
     @Override
     public List<ReceiptDTO> findAllByQuery(String query) {
-        return repository.findAllByQuery(query)
+        return repository.findAllByQuery("%" + query + "%")
                 .stream().map(ReceiptDTO::of)
                 .collect(Collectors.toList());
     }
@@ -75,12 +77,12 @@ public class ReceiptService implements ReceiptIntegrate {
 
     @Override
     public List<Long> boothCoinIncomeOfHour() {
-        return repository.boothCoinIncomeOfHour();
+        return receiptJDBCRepository.boothCoinIncomeOfHour();
     }
 
     @Override
     public List<Long> boothCoinExpensesOfHour() {
-        return repository.boothCoinExpensesOfHour();
+        return receiptJDBCRepository.boothCoinExpensesOfHour();
     }
 
 }

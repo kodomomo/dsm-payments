@@ -101,4 +101,5 @@ public class BoothServiceImpl implements BoothService {
     public Booth getBooth(String boothId) {
         return boothRepository.findById(boothId).orElseThrow(BoothNotFoundException::new);
     }
+    
 }

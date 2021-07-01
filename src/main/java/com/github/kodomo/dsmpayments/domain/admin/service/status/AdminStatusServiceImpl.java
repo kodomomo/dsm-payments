@@ -28,7 +28,9 @@ public class AdminStatusServiceImpl implements AdminStatusService {
         double allUserCoinAverage = userRepository.allUserCoinAverage();
         List<Long> userCoinUseOfHour = receiptIntegrate.userCoinUseOfHour();
         List<Long> boothCoinIncomeOfHour = receiptIntegrate.boothCoinIncomeOfHour();
+        if (boothCoinIncomeOfHour.size() < 10) boothCoinIncomeOfHour = null;
         List<Long> boothCoinExpensesOfHour = receiptIntegrate.boothCoinExpensesOfHour();
+        if (boothCoinExpensesOfHour.size() < 10) boothCoinExpensesOfHour = null;
         List<BoothDTO> totalCoinOfBooths = boothRepository.findAll()
                 .stream().map(BoothDTO::of)
                 .collect(Collectors.toList());

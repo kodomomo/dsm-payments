@@ -21,7 +21,7 @@ public class AdminPayServiceImpl implements AdminPayService {
     private final BoothRepository boothRepository;
 
     @Override
-    public void depositToUser(int userNumber, int value) {
+    public void depositToUser(String userNumber, int value) {
         User user = userRepository.findByUserNumber(userNumber).orElseThrow(UserNotFoundException::new);
         ReceiptDTO resultDTO = registerReceipt(user, null, value);
 

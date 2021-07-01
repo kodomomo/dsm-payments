@@ -13,7 +13,7 @@ public class AdminPayController {
     private final AdminPayService adminPayService;
 
     @PostMapping("/user/{userNumber}")
-    public void depositToUser(@PathVariable int userNumber, @RequestBody ValueDTO valueDTO) {
+    public void depositToUser(@PathVariable String userNumber, @RequestBody ValueDTO valueDTO) {
         adminPayService.depositToUser(userNumber, valueDTO.getValue());
     }
 

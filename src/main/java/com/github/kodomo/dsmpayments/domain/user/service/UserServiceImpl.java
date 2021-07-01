@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(Integer userNumber) {
+    public User getUser(String userNumber) {
         return userRepository.findByUserNumber(userNumber)
                 .orElseThrow(UserNotFoundException::new);
     }
@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer getNumOfBoothsUsedByUser(Integer userNumber) {
+    public Integer getNumOfBoothsUsedByUser(String userNumber) {
         User user = userRepository.findByUserNumber(userNumber).orElseThrow(UserNotFoundException::new);
         return receiptIntegrate.getNumOfBoothsUsedByUser(user);
     }

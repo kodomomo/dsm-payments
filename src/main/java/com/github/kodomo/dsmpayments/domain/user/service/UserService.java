@@ -7,9 +7,9 @@ public interface UserService {
 
     public String teacherLogin(String id, String password);
 
-    public User getUser(Integer userNumber);
+    public User getUser(String userNumber);
 
     public User getUserByUuid(String userUuid);
 
-    public Integer getNumOfBoothsUsedByUser(Integer userNumber);
+    public Integer getNumOfBoothsUsedByUser(String userNumber);
 }

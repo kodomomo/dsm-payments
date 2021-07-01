@@ -14,7 +14,9 @@ import java.util.List;
 @Repository
 public interface ReceiptRepository extends CrudRepository<Receipt, Long> {
 
-    @Query(value = "select receipt from tbl_receipt receipt where receipt.user.userNumber like %?1% or receipt.user.userName like %?1%")
+    @Query(value = "select r.* from tbl_receipt as r join tbl_user as u join tbl_booth as b " +
+            "where u.user_name like ?1 or u.user_number like ?1 or b.booth_id like ?1 or b.booth_name like ?1 " +
+            "group by r.id", nativeQuery = true)
     List<Receipt> findAllByQuery(String query);
 
     List<Receipt> findAllByUser(User user);
@@ -33,9 +35,4 @@ public interface ReceiptRepository extends CrudRepository<Receipt, Long> {
     @Query(value = "SELECT sum(requested_value) FROM tbl_receipt group by HOUR(created_at)", nativeQuery = true)
     List<Long> userCoinUseOfHour();
 
-    @Query(value = "SELECT sum(requested_value) FROM tbl_receipt where booth_id is not null and final_value > 0 group by HOUR(created_at)", nativeQuery = true)
-    List<Long> boothCoinIncomeOfHour();
-
-    @Query(value = "SELECT sum(requested_value) FROM tbl_receipt where booth_id is not null and final_value < 0 group by HOUR(created_at)", nativeQuery = true)
-    List<Long> boothCoinExpensesOfHour();
 }

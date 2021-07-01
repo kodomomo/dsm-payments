@@ -40,13 +40,13 @@ public class UserController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public UserResponse getUser(@AuthenticationPrincipal Object number) {
-        User user = userService.getUser(Integer.valueOf((String) number));
+        User user = userService.getUser((String) number);
         return UserResponse.builder()
                 .uuid(user.getUserUuid())
                 .name(user.getUserName())
                 .number(user.getUserNumber())
                 .coin(user.getCoin())
-                .countOfUsedBooth(userService.getNumOfBoothsUsedByUser(Integer.valueOf((String) number)))
+                .countOfUsedBooth(userService.getNumOfBoothsUsedByUser((String) number))
                 .build();
     }
 
