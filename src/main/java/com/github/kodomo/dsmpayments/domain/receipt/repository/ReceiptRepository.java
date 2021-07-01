@@ -14,12 +14,13 @@ import java.util.List;
 @Repository
 public interface ReceiptRepository extends CrudRepository<Receipt, Long> {
 
-    @Query(value = "select r.* from tbl_receipt as r join tbl_user as u join tbl_booth as b " +
-            "where u.user_name like ?1 or u.user_number like ?1 or b.booth_id like ?1 or b.booth_name like ?1 " +
-            "group by r.id", nativeQuery = true)
-    List<Receipt> findAllByQuery(String query);
+    @Query(value = "select * from tbl_receipt r left join tbl_user u on r.user_number=u.user_number " +
+            "left join tbl_booth b on r.booth_id=b.booth_id where u.user_name like ?1 or " +
+            "r.user_number like ?1 or r.booth_id like ?1 or b.booth_name like ?1 group by r.id", nativeQuery = true)
+    Page<Receipt> findAllByQuery(String query, Pageable pageable);
 
     List<Receipt> findAllByUser(User user);
+
     Page<Receipt> findAllByBooth(Booth booth, Pageable pageable);
 
     @Query(

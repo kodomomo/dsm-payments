@@ -62,9 +62,7 @@ public class Receipt {
                 receiptDTO.getBoothEntity(),
                 receiptDTO.getSender(),
                 receiptDTO.getRequestValue(),
-                Date.from(LocalDateTime.now()
-                        .atZone(ZoneId.of("Asia/Seoul"))
-                        .toInstant())
+                new Date(System.currentTimeMillis())
         );
     }
 

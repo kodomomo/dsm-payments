@@ -10,9 +10,9 @@ import java.util.List;
 
 public interface ReceiptIntegrate {
     ReceiptDTO registerReceipt(ReceiptDTO receiptDTO);
-    List<ReceiptDTO> findAllByQuery(String query);
+    ReceiptPageDTO findAllByQuery(String query, Pageable pageable);
     List<ReceiptDTO> findAllForUser(User user);
-    ReceiptPageDTO findAllForSeller(Booth booth, Pageable pageable);
+    ReceiptPageDTO findAllForBooth(Booth booth, Pageable pageable);
     Integer getNumOfBoothsUsedByUser(User user);
     Integer getNumOfUsersUsingBooth(Booth booth);
     List<Long> userCoinUseOfHour();

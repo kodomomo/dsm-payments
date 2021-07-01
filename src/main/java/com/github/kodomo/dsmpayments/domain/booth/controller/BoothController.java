@@ -10,12 +10,10 @@ import com.github.kodomo.dsmpayments.domain.booth.entity.Menu;
 import com.github.kodomo.dsmpayments.domain.booth.service.BoothService;
 import com.github.kodomo.dsmpayments.domain.receipt.integrate.ReceiptIntegrate;
 import com.github.kodomo.dsmpayments.domain.receipt.service.dto.ReceiptDTO;
-import com.github.kodomo.dsmpayments.domain.receipt.service.dto.ReceiptPageDTO;
 import com.github.kodomo.dsmpayments.infra.token.JWTRequired;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -88,7 +86,7 @@ public class BoothController {
             @RequestParam("size") String size
     ) {
         Booth booth = boothService.getBooth((String) boothId);
-        return ReceiptsResponse.of(receiptIntegrate.findAllForSeller(
+        return ReceiptsResponse.of(receiptIntegrate.findAllForBooth(
                 booth, PageRequest.of(Integer.parseInt(page), Integer.parseInt(size), Sort.by("id").descending())));
     }
 

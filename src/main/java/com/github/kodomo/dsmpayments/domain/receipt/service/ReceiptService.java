@@ -41,10 +41,9 @@ public class ReceiptService implements ReceiptIntegrate {
     }
 
     @Override
-    public List<ReceiptDTO> findAllByQuery(String query) {
-        return repository.findAllByQuery("%" + query + "%")
-                .stream().map(ReceiptDTO::of)
-                .collect(Collectors.toList());
+    public ReceiptPageDTO findAllByQuery(String query, Pageable pageable) {
+        Page<Receipt> receipts = repository.findAllByQuery("%" + query + "%", pageable);
+        return ReceiptPageDTO.of(receipts);
     }
 
     @Override
@@ -55,7 +54,7 @@ public class ReceiptService implements ReceiptIntegrate {
     }
 
     @Override
-    public ReceiptPageDTO findAllForSeller(Booth booth, Pageable pageable) {
+    public ReceiptPageDTO findAllForBooth(Booth booth, Pageable pageable) {
         Page<Receipt> receiptPages = repository.findAllByBooth(booth, pageable);
         return ReceiptPageDTO.of(receiptPages);
     }
