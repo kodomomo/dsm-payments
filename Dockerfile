@@ -1,3 +1,3 @@
 FROM openjdk:11
-COPY ./build/libs/com.github.kodomo-1.0.jar app.jar
+COPY ./build/libs/DSM-Payments.jar app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]
