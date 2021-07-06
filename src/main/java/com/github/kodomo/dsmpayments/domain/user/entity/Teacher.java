@@ -21,7 +21,7 @@ public class Teacher {
     @Column(length = 60, nullable = false)
     private String password;
 
-    @Column(length = 4, nullable = false)
+    @Column(length = 50, nullable = false)
     private String name;
 
     @Column(length = 4, nullable = false)
