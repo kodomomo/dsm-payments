@@ -1,4 +1,5 @@
 server:
+  port: ${PORT}
   socket:
     port: ${SOCKET_PORT}
 
