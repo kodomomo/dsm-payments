@@ -1,9 +1,10 @@
 package com.github.kodomo.dsmpayments.domain.user.service;
 
+import com.github.kodomo.dsmpayments.domain.user.controller.payload.request.UserLoginRequest;
 import com.github.kodomo.dsmpayments.domain.user.entity.User;
 
 public interface UserService {
-    public String login(String id, String password);
+    public String login(UserLoginRequest request);
 
     public String teacherLogin(String id, String password);
 

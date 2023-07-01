@@ -1,15 +1,20 @@
 package com.github.kodomo.dsmpayments.domain.user.service;
 
 import com.github.kodomo.dsmpayments.domain.receipt.integrate.ReceiptIntegrate;
+import com.github.kodomo.dsmpayments.domain.user.controller.payload.request.UserLoginRequest;
+import com.github.kodomo.dsmpayments.domain.user.controller.payload.response.UserLoginResponse;
 import com.github.kodomo.dsmpayments.domain.user.entity.DMSUser;
 import com.github.kodomo.dsmpayments.domain.user.entity.Teacher;
 import com.github.kodomo.dsmpayments.domain.user.entity.User;
+import com.github.kodomo.dsmpayments.domain.user.entity.XquareUser;
 import com.github.kodomo.dsmpayments.domain.user.exception.LoginFailedException;
 import com.github.kodomo.dsmpayments.domain.user.exception.UserNotFoundException;
 import com.github.kodomo.dsmpayments.domain.user.repository.TeacherRepository;
 import com.github.kodomo.dsmpayments.domain.user.repository.UserRepository;
+import com.github.kodomo.dsmpayments.infra.feign.client.XquareAuth;
 import com.github.kodomo.dsmpayments.infra.token.TokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.bouncycastle.openssl.PasswordException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,18 +28,19 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final TeacherRepository teacherRepository;
     private final ReceiptIntegrate receiptIntegrate;
-
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
+    private final XquareAuth xquareAuth;
 
     @Override
-    public String login(String id, String password) {
-        DMSUser user = userRepository.findDMSUserById(id)
-                .orElseThrow(LoginFailedException::new);
+    public String login(UserLoginRequest request) {
+        XquareUser xquareUser = xquareAuth.xquareAuth(request.getAccountId());
 
-        if (!user.checkPassword(password)) { throw new LoginFailedException(); }
+        if (!passwordEncoder.matches(request.getPassword(), xquareUser.getPassword())) {
+            throw new LoginFailedException();
+        }
 
-        return tokenProvider.generateAccessToken(String.valueOf(user.getNumber()), "user");
+        return tokenProvider.generateAccessToken(String.valueOf(xquareUser.getId()), "user");
     }
 
     @Override
