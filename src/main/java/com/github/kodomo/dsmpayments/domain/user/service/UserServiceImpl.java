@@ -2,23 +2,20 @@ package com.github.kodomo.dsmpayments.domain.user.service;
 
 import com.github.kodomo.dsmpayments.domain.receipt.integrate.ReceiptIntegrate;
 import com.github.kodomo.dsmpayments.domain.user.controller.payload.request.UserLoginRequest;
-import com.github.kodomo.dsmpayments.domain.user.controller.payload.response.UserLoginResponse;
-import com.github.kodomo.dsmpayments.domain.user.entity.DMSUser;
 import com.github.kodomo.dsmpayments.domain.user.entity.Teacher;
 import com.github.kodomo.dsmpayments.domain.user.entity.User;
-import com.github.kodomo.dsmpayments.domain.user.entity.XquareUser;
+import com.github.kodomo.dsmpayments.domain.user.entity.xquare.XquareUser;
 import com.github.kodomo.dsmpayments.domain.user.exception.LoginFailedException;
 import com.github.kodomo.dsmpayments.domain.user.exception.UserNotFoundException;
 import com.github.kodomo.dsmpayments.domain.user.repository.TeacherRepository;
 import com.github.kodomo.dsmpayments.domain.user.repository.UserRepository;
-import com.github.kodomo.dsmpayments.infra.feign.client.XquareAuth;
+import com.github.kodomo.dsmpayments.infra.feign.client.XquareAPI;
+import com.github.kodomo.dsmpayments.infra.feign.dto.response.XquareSignInRequest;
+import com.github.kodomo.dsmpayments.infra.feign.dto.response.XquareSignInResponse;
 import com.github.kodomo.dsmpayments.infra.token.TokenProvider;
 import lombok.RequiredArgsConstructor;
-import org.bouncycastle.openssl.PasswordException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.security.MessageDigest;
 
 
 @Service
@@ -30,17 +27,20 @@ public class UserServiceImpl implements UserService {
     private final ReceiptIntegrate receiptIntegrate;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
-    private final XquareAuth xquareAuth;
+    private final XquareAPI xquareAPI;
 
     @Override
     public String login(UserLoginRequest request) {
-        XquareUser xquareUser = xquareAuth.xquareAuth(request.getAccountId());
+        XquareSignInResponse response = xquareAPI.signIn(
+                new XquareSignInRequest(request.getAccountId(), request.getPassword())
+        );
+        XquareUser xquareUser = xquareAPI.getUser(response.getAccess_token(), request.getAccountId());
 
         if (!passwordEncoder.matches(request.getPassword(), xquareUser.getPassword())) {
             throw new LoginFailedException();
         }
 
-        return tokenProvider.generateAccessToken(String.valueOf(xquareUser.getId()), "user");
+        return tokenProvider.generateAccessToken(xquareUser.getStrGradeClassNumber(), "user");
     }
 
     @Override
