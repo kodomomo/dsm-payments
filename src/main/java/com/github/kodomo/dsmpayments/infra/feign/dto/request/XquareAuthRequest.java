@@ -1,4 +1,4 @@
-package com.github.kodomo.dsmpayments.infra.feign.dto.response;
+package com.github.kodomo.dsmpayments.infra.feign.dto.request;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Getter
 @Builder
-public class XquareAuthResponse {
+public class XquareAuthRequest {
 
     private String name;
 
