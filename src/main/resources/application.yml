@@ -22,3 +22,9 @@ db:
 
 admin:
   password: ${ADMIN_PASSWORD}
+
+xquare:
+  base-url: ${BASE_URL}
+  signin-suffix: ${SIGNIN_SUFFIX}
+  getuser-suffix: ${GETUSER-SUFFIX}
+  
