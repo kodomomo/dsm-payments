@@ -32,9 +32,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public String login(UserLoginRequest request) {
         XquareSignInResponse response = xquareAPI.signIn(
-                new XquareSignInRequest(request.getAccountId(), request.getPassword())
+                new XquareSignInRequest(request.getId(), request.getPassword())
         );
-        XquareUser xquareUser = xquareAPI.getUser(response.getAccess_token(), request.getAccountId());
+        XquareUser xquareUser = xquareAPI.getUser(response.getAccess_token(), request.getId());
 
         if (!passwordEncoder.matches(request.getPassword(), xquareUser.getPassword())) {
             throw new LoginFailedException();

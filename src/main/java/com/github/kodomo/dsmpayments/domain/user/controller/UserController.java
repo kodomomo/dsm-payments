@@ -32,7 +32,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public UserLoginResponse teacherLogin(@RequestBody UserLoginRequest request) {
         return UserLoginResponse.builder()
-                .accessToken(userService.teacherLogin(request.getAccountId(), request.getPassword()))
+                .accessToken(userService.teacherLogin(request.getId(), request.getPassword()))
                 .build();
     }
 
